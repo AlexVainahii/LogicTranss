@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/LogicTranss/static/css/main.b5320759.css",
-    "main.js": "/LogicTranss/static/js/main.1453f0cb.js",
+    "main.js": "/LogicTranss/static/js/main.e2ca3417.js",
     "index.html": "/LogicTranss/index.html",
     "main.b5320759.css.map": "/LogicTranss/static/css/main.b5320759.css.map",
-    "main.1453f0cb.js.map": "/LogicTranss/static/js/main.1453f0cb.js.map"
+    "main.e2ca3417.js.map": "/LogicTranss/static/js/main.e2ca3417.js.map"
   },
   "entrypoints": [
     "static/css/main.b5320759.css",
-    "static/js/main.1453f0cb.js"
+    "static/js/main.e2ca3417.js"
   ]
 }
