@@ -13,5 +13,45 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-header {
+nav {
+  padding: 10px;
+}
+
+main {
+  min-height: 585px;
+
+  background-image: url('./images/fon.jpg');
+  background-size: cover;
+  background-position: center;
+}
+main div {
+  margin: 0 auto;
+  max-width: 800px;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 20px;
+}
+footer {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+}
+footer div {
+  display: flex;
+  margin: auto 0;
+  justify-content: space-around;
+}
+footer li {
+  margin-top: 5px;
+}
+footer a {
+  color: #fff;
+  text-decoration: none;
+}
+footer ul {
+  list-style-type: none;
+}
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
 }

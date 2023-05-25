@@ -1,34 +1,44 @@
+import { Container } from 'components/SharedLayout.styled';
 import { Link, Outlet } from 'react-router-dom';
 
 export const About = () => {
   return (
     <main>
-      <h1>About Us</h1>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus
-        laborum amet ab cumque sit nihil dolore modi error repudiandae
-        perspiciatis atque voluptas corrupti, doloribus ex maiores quam magni
-        mollitia illum dolor quis alias in sequi quod. Sunt ex numquam hic
-        asperiores facere natus sapiente cum neque laudantium quam, expedita
-        voluptates atque quia aspernatur saepe illo, rem quasi praesentium
-        aliquid sed inventore obcaecati veniam? Nisi magnam vero, dolore
-        praesentium totam ducimus similique asperiores culpa, eius amet
-        repudiandae quam ut. Architecto commodi, tempore ut nostrum voluptas
-        dolorum illum voluptatum dolores! Quas perferendis quis alias excepturi
-        eaque voluptatibus eveniet error, nulla rem iusto?
-      </p>
-      <ul>
-        <li>
-          <Link to="mission">Read about our mission</Link>
-        </li>
-        <li>
-          <Link to="team">Get to know the team</Link>
-        </li>
-        <li>
-          <Link to="reviews">Go through the reviews</Link>
-        </li>
-      </ul>
-      <Outlet />
+      <div>
+        <h1>Про нас</h1>
+        <p>
+          "Логістична компанія "LOGICTRANS" - це інноваційний лідер у галузі
+          перевезень та логістики. Ми пропонуємо комплексні рішення для
+          ефективного руху вантажів по всьому світу." "Наша місія - забезпечити
+          нашим клієнтам надійну та швидку доставку їхніх вантажів до будь-якої
+          точки світу. Ми знаємо, що кожна доставка має велике значення, тому ми
+          пильно стежимо за кожним деталем, щоб забезпечити найвищу якість
+          обслуговування." "У "LOGICTRANS" ми розуміємо, що сучасні бізнеси
+          потребують гнучких та інноваційних логістичних рішень. Ми впроваджуємо
+          передові технології та використовуємо відмінний досвід нашої команди,
+          щоб задовольнити потреби наших клієнтів та прискорити їх успіх на
+          ринку." "Наша команда професіоналів володіє глибокими знаннями та
+          експертизою в галузі логістики. Ми працюємо разом з нашими клієнтами,
+          розуміючи їхні унікальні вимоги та розробляючи індивідуальні рішення,
+          що сприяють їхньому успіху." "Наша компанія пишається ефективною
+          мережею партнерів та розташуванням в стратегічних локаціях. Ми маємо
+          доступ до широкої географічної присутності, що дозволяє нам
+          забезпечувати оперативні та надійні перевезення в будь-які куточки
+          світу."
+        </p>
+        <ul>
+          <li>
+            <Link to="mission">Про нашу місію</Link>
+          </li>
+          <li>
+            <Link to="team">Дізнайтеся про нашу команду</Link>
+          </li>
+          <li>
+            <Link to="reviews">Go through the reviews</Link>
+          </li>
+        </ul>
+        <Outlet />
+      </div>
     </main>
   );
 };

@@ -1,23 +1,35 @@
+import {
+  TeamSection,
+  TeamMember,
+  TeamMemberName,
+  TeamMemberRole,
+  TeamMemberImage,
+} from './Team.styled';
 export const Team = () => {
   return (
     <section>
-      <ul>
-        <li>
-          <b>CEO</b> - Gabrijela Vohu Manah
-        </li>
-        <li>
-          <b>Sales</b> - Darius Marianne
-        </li>
-        <li>
-          <b>Product</b> - Ségdae Jean-Pierre
-        </li>
-        <li>
-          <b>Marketing</b> - Melina Theotimos
-        </li>
-        <li>
-          <b>Engineering</b> - Gregor Ramadhani
-        </li>
-      </ul>
+      <TeamSection>
+        <TeamMember>
+          <TeamMemberImage src="alexander.jpg" alt="Олександр" />
+          <TeamMemberName>Олександр Сидорчук</TeamMemberName>
+          <TeamMemberRole>Директор з логістики</TeamMemberRole>
+        </TeamMember>
+        <TeamMember>
+          <TeamMemberImage src="anna.jpg" alt="Анна" />
+          <TeamMemberName>Анна Василенко</TeamMemberName>
+          <TeamMemberRole>Менеджер з перевезень</TeamMemberRole>
+        </TeamMember>
+        <TeamMember>
+          <TeamMemberImage src="mikhail.jpg" alt="Михайло" />
+          <TeamMemberName>Михайло Ковальчук</TeamMemberName>
+          <TeamMemberRole>Спеціаліст зі складського управління</TeamMemberRole>
+        </TeamMember>
+        <TeamMember>
+          <TeamMemberImage src="julia.jpg" alt="Юлія" />
+          <TeamMemberName>Юлія Іваненко</TeamMemberName>
+          <TeamMemberRole>Логістичний аналітик</TeamMemberRole>
+        </TeamMember>
+      </TeamSection>
     </section>
   );
 };

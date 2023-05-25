@@ -6,16 +6,20 @@ export const Container = styled.div`
   margin: 0 auto;
   padding: 0 16px;
 `;
-export const Header = styled.header`
-  display: flex;
-  height: 100px;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 8px 0;
-  margin-bottom: 16px;
-  border-bottom: 1px solid black;
 
+export const Header = styled.header`
+  background-color: #333;
+
+  padding: 8px 0;
+  border-bottom: 1px solid black;
+  > div {
+    display: flex;
+    height: 70px;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+  }
   > nav {
     display: flex;
   }
@@ -33,11 +37,17 @@ export const Links = styled(NavLink)`
   padding: 8px 16px;
   border-radius: 4px;
   text-decoration: none;
-  color: black;
+  color: #fff;
   font-weight: 500;
 
   &.active {
     color: white;
     background-color: orangered;
   }
+`;
+export const Contacts = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
