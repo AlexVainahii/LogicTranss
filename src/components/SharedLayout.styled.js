@@ -2,13 +2,13 @@ import styled from 'styled-components';
 import { Link, NavLink } from 'react-router-dom';
 
 export const Container = styled.div`
-  max-width: 960px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 16px;
 `;
-
 export const Header = styled.header`
   display: flex;
+  height: 100px;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
@@ -24,6 +24,7 @@ export const Header = styled.header`
 export const Logo = styled(Link)`
   font-weight: 700;
   margin: 0;
+  margin-left: 50px;
   text-decoration: none;
   color: black;
 `;
