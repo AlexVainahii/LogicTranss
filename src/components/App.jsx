@@ -10,7 +10,7 @@ export const App = () => {
         color: '#010101',
       }}
     >
-      <img src="./src/images/logo3.png" alt="www" width={200} />
+      <img src="./public/images/logo3.png" alt="wwa" width={200} />
       React homework template 1
     </div>
   );
