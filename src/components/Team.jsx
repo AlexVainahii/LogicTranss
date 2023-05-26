@@ -5,28 +5,32 @@ import {
   TeamMemberRole,
   TeamMemberImage,
 } from './Team.styled';
+import img1 from '../images/team_img_1.jpg';
+import img2 from '../images/team_img_2.jpg';
+import img3 from '../images/team_img_3.jpg';
+import img4 from '../images/team_img_4.jpg';
 export const Team = () => {
   return (
     <section>
       <TeamSection>
         <TeamMember>
-          <TeamMemberImage src="alexander.jpg" alt="Олександр" />
+          <TeamMemberImage src={img1} alt="Олександр" />
           <TeamMemberName>Олександр Сидорчук</TeamMemberName>
           <TeamMemberRole>Директор з логістики</TeamMemberRole>
         </TeamMember>
         <TeamMember>
-          <TeamMemberImage src="anna.jpg" alt="Анна" />
+          <TeamMemberImage src={img2} alt="Анна" />
           <TeamMemberName>Анна Василенко</TeamMemberName>
           <TeamMemberRole>Менеджер з перевезень</TeamMemberRole>
         </TeamMember>
         <TeamMember>
-          <TeamMemberImage src="mikhail.jpg" alt="Михайло" />
+          <TeamMemberImage src={img3} alt="Михайло" />
           <TeamMemberName>Михайло Ковальчук</TeamMemberName>
-          <TeamMemberRole>Спеціаліст зі складського управління</TeamMemberRole>
+          <TeamMemberRole>Технічний спеціаліст</TeamMemberRole>
         </TeamMember>
         <TeamMember>
-          <TeamMemberImage src="julia.jpg" alt="Юлія" />
-          <TeamMemberName>Юлія Іваненко</TeamMemberName>
+          <TeamMemberImage src={img4} alt="Іван" />
+          <TeamMemberName>Іван Ткаченко</TeamMemberName>
           <TeamMemberRole>Логістичний аналітик</TeamMemberRole>
         </TeamMember>
       </TeamSection>

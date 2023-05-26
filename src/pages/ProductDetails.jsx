@@ -1,9 +1,9 @@
 import { useParams } from 'react-router-dom';
-import { getProductById } from '../fakeApi';
+import { getShipmentsById } from '../fakeApi';
 
 export const ProductDetails = () => {
   const { id } = useParams();
-  const product = getProductById(id);
+  const product = getShipmentsById(id);
   return (
     <main>
       <img src="https://via.placeholder.com/960x240" alt="" />

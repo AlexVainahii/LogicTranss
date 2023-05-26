@@ -1,13 +1,12 @@
-import { Container } from 'components/SharedLayout.styled';
 import { ProductList } from '../components/ProductList';
-import { getProducts } from '../fakeApi';
+import { getShipments } from '../fakeApi';
 
 export const Products = () => {
-  const products = getProducts();
+  const shipments = getShipments();
   return (
     <main>
       <div>
-        <ProductList products={products} />
+        <ProductList shipments={shipments} />
       </div>
     </main>
   );

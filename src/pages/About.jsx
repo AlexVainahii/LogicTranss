@@ -34,7 +34,7 @@ export const About = () => {
             <Link to="team">Дізнайтеся про нашу команду</Link>
           </li>
           <li>
-            <Link to="reviews">Go through the reviews</Link>
+            <Link to="reviews">Ознайомтесь з відгуками</Link>
           </li>
         </ul>
         <Outlet />

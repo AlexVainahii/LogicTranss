@@ -1,22 +1,29 @@
+import { ReviewAuthor, ReviewContainer, ReviewContent } from './Rewiews.styled';
 export const Reviews = () => {
+  const reviews = [
+    {
+      id: 1,
+      author: 'Іван Петров',
+      content:
+        'Дуже задоволений послугами LOGICTRANS. Швидка доставка і висока якість обслуговування.',
+    },
+    {
+      id: 2,
+      author: 'Олена Сидоренко',
+      content:
+        'Завжди надійна компанія для наших логістичних потреб. Рекомендую LOGICTRANS усім!',
+    },
+  ];
   return (
     <section>
       <div>
-        <h2>First review - 4.6/5</h2>
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Autem harum
-          architecto sapiente corporis, voluptatem quas voluptatibus fugiat
-          nulla commodi quidem, dolorem distinctio inventore blanditiis illo
-          tenetur aut enim ex laborum!
-        </p>
-      </div>
-      <div>
-        <h2>Second review - 4.8/5</h2>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti
-          nihil ea, eaque fugit amet possimus officiis asperiores aperiam facere
-          et?
-        </p>
+        <h2>Відгуки</h2>
+        {reviews.map(review => (
+          <ReviewContainer key={review.id}>
+            <ReviewAuthor>{review.author}</ReviewAuthor>
+            <ReviewContent>{review.content}</ReviewContent>
+          </ReviewContainer>
+        ))}
       </div>
     </section>
   );
