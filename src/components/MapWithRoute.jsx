@@ -7,24 +7,23 @@ mapboxgl.accessToken =
 const MapWithRoute = ({ coordinates, centrMap, markers, zoom }) => {
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
-  console.table(coordinates, centrMap, markers, zoom);
 
   useEffect(() => {
     // Ініціалізація мапи
-
+    console.table(coordinates, centrMap, markers, zoom, '1');
     mapRef.current = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: 'mapbox://styles/mapbox/streets-v11',
       center: centrMap,
       zoom: zoom,
     });
-
+    console.table(coordinates, centrMap, markers, zoom, '2');
     // Додавання маркерів
     markers.forEach(coord => {
       //var coord1[0]=coord[1];
       new mapboxgl.Marker().setLngLat(coord).addTo(mapRef.current);
     });
-
+    console.table(coordinates, centrMap, markers, zoom, '3');
     // Додавання лінії маршруту
     const routeLine = {
       type: 'Feature',
@@ -34,7 +33,7 @@ const MapWithRoute = ({ coordinates, centrMap, markers, zoom }) => {
         coordinates: coordinates,
       },
     };
-
+    console.table(coordinates, centrMap, markers, zoom, '4');
     mapRef.current.on('load', () => {
       mapRef.current.addSource('route', {
         type: 'geojson',
