@@ -23,11 +23,11 @@ const OrderForm = () => {
   };
 
   const handleOriginChange = async event => {
-    const value = event.target.value;
-    setOrigin(value);
+    const value1 = event.target.value;
+    setOrigin(value1);
 
-    const suggestions = await fetchSuggestions(value);
-    if (value === '') {
+    const suggestions = await fetchSuggestions(value1);
+    if (value1 === '') {
       setSuggestions([]);
     } else {
       setSuggestions(suggestions);
