@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-// import { Icon } from '@material-ui/core';
-// import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import Icon from '@mui/material/Icon';
+
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import {
   Container,
   CardWrapper,
@@ -110,7 +111,7 @@ export const ShipmentList = ({ shipments }) => {
                 </Pag>
               </Wrap>
               <WrapArrow>
-                {/* <Icon component={ArrowForwardIcon} /> */}
+                <Icon component={ArrowForwardIcon} />
               </WrapArrow>
               <Wrap>
                 <Pag> Кінцевий пункт:</Pag>

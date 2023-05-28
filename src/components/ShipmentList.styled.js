@@ -14,6 +14,7 @@ export const Wrap = styled.div`
   text-align: center;
   padding: 0;
   background: none;
+  width: 150px;
 `;
 export const WrapArrow = styled.div`
   text-align: center;
