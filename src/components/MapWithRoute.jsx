@@ -22,10 +22,10 @@ const MapWithRoute = ({ coordinates, centrMap, markers, zoom = 6 }) => {
     });
     console.table(coordinates, centrMap, markers, zoom, '2');
     // Додавання маркерів
-    markers.forEach(coord => {
-      //var coord1[0]=coord[1];
-      new mapboxgl.Marker().setLngLat(coord).addTo(mapRef.current);
-    });
+    // markers.forEach(coord => {
+    //   //var coord1[0]=coord[1];
+    //   new mapboxgl.Marker().setLngLat(coord).addTo(mapRef.current);
+    // });
     console.table(coordinates, centrMap, markers, zoom, '3');
     // Додавання лінії маршруту
     const routeLine = {
