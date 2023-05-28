@@ -1,19 +1,20 @@
 {
   "files": {
     "main.css": "/LogicTranss/static/css/main.f6ca613b.css",
-    "main.js": "/LogicTranss/static/js/main.09b86287.js",
+    "main.js": "/LogicTranss/static/js/main.2cb9f55a.js",
     "static/media/fon.jpg": "/LogicTranss/static/media/fon.a74ef51df712d95bb4d9.jpg",
     "static/media/logo3.png": "/LogicTranss/static/media/logo3.b928d099fe8c5d6a36e6.png",
     "static/media/team_img_2.jpg": "/LogicTranss/static/media/team_img_2.24d647d835a4d8cf7620.jpg",
     "static/media/team_img_1.jpg": "/LogicTranss/static/media/team_img_1.b41aa1c067deda7714f7.jpg",
     "static/media/team_img_4.jpg": "/LogicTranss/static/media/team_img_4.36d32df54776d28b1fec.jpg",
     "static/media/team_img_3.jpg": "/LogicTranss/static/media/team_img_3.ecf9ba82fd78d8645eb2.jpg",
+    "static/media/marker-icon.png": "/LogicTranss/static/media/marker-icon.8be6cbde115d5b9948bb.png",
     "index.html": "/LogicTranss/index.html",
     "main.f6ca613b.css.map": "/LogicTranss/static/css/main.f6ca613b.css.map",
-    "main.09b86287.js.map": "/LogicTranss/static/js/main.09b86287.js.map"
+    "main.2cb9f55a.js.map": "/LogicTranss/static/js/main.2cb9f55a.js.map"
   },
   "entrypoints": [
     "static/css/main.f6ca613b.css",
-    "static/js/main.09b86287.js"
+    "static/js/main.2cb9f55a.js"
   ]
 }
