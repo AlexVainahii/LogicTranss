@@ -54,3 +54,6 @@ export const Wrapper = styled.div`
 export const Pag = styled.p`
   margin: 5px;
 `;
+export const Back = styled.h3`
+  margin: 5px;
+`;

@@ -6,9 +6,12 @@ import {
   getZoom,
   getcentrMap,
 } from 'fakeApi';
-import { useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { Container } from 'components/SharedLayout.styled';
 import { ShipmentBlock } from 'components/ShipmentBlock';
+import { IconButton } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Back } from 'components/ShipmentBlock.styled';
 export const ShipmentDetails = () => {
   const { id } = useParams();
   const shipment = getShipmentsById(Number(id));
@@ -16,11 +19,22 @@ export const ShipmentDetails = () => {
   const markers = getMarker(shipment);
   const distance = getDistance(shipment);
   const zoom = getZoom(distance);
+  const location = useLocation();
+  const backLinkHref = location.state?.from ?? '/shipments';
 
   return (
     <main>
       <div>
         <Container>
+          <Link
+            to={backLinkHref}
+            style={{ display: 'flex', alignItems: 'center' }}
+          >
+            <IconButton color="primary">
+              <ArrowBackIcon />
+            </IconButton>
+            <Back>Повернутись до списку перевезень</Back>
+          </Link>
           <ShipmentBlock shipment={shipment} condition={false} />
           <MapWithRoute
             coordinates={shipment.route}

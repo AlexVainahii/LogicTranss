@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Icon from '@mui/material/Icon';
 
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -32,10 +32,12 @@ const getStatusColor = status => {
   return className;
 };
 export const ShipmentBlock = ({ shipment, condition }) => {
+  const location = useLocation();
   return (
     <CardWrapper key={shipment.id} className={getStatusColor(shipment.status)}>
       <Link
         to={`${shipment.id}`}
+        state={{ from: location }}
         onClick={!condition ? e => e.preventDefault() : undefined}
       >
         <ProductName>
