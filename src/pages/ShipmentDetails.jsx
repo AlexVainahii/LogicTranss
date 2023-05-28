@@ -7,7 +7,8 @@ import {
   getcentrMap,
 } from 'fakeApi';
 import { useParams } from 'react-router-dom';
-
+import { Container } from 'components/SharedLayout.styled';
+import { ShipmentBlock } from 'components/ShipmentBlock';
 export const ShipmentDetails = () => {
   const { id } = useParams();
   const shipment = getShipmentsById(Number(id));
@@ -17,14 +18,19 @@ export const ShipmentDetails = () => {
   const zoom = getZoom(distance);
 
   return (
-    <div>
-      <h1>Maps</h1>
-      <MapWithRoute
-        coordinates={shipment.route}
-        centrMap={centrMap}
-        markers={markers}
-        zoom={zoom}
-      />
-    </div>
+    <main>
+      <div>
+        <Container>
+          <ShipmentBlock shipment={shipment} condition={false} />
+          <MapWithRoute
+            coordinates={shipment.route}
+            centrMap={centrMap}
+            markers={markers}
+            zoom={zoom}
+            shipment={shipment}
+          />
+        </Container>
+      </div>
+    </main>
   );
 };

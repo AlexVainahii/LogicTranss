@@ -1,6 +1,16 @@
 import React, { useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import markerIcon from '../images/marker-icon.png';
+var iconStyle = L.icon({
+  iconUrl: markerIcon,
+  iconSize: [30, 31],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
+  title: 'Початковий пункт',
+  alt: 'Початковий пункт',
+});
 
 const MapWithRoute = ({ coordinates, centrMap, markers, zoom = 6 }) => {
   const mapContainerRef = useRef(null);
@@ -9,15 +19,38 @@ const MapWithRoute = ({ coordinates, centrMap, markers, zoom = 6 }) => {
   useEffect(() => {
     mapRef.current = L.map(mapContainerRef.current).setView(centrMap, zoom);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
       attribution:
-        'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
-      maxZoom: 18,
+        'Map data &copy; <a href="https://www.google.com/">Google</a>',
+      subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+      maxZoom: 20,
     }).addTo(mapRef.current);
-
+    var k = 1;
     // Додавання маркерів
     markers.forEach(coord => {
-      L.marker(coord).addTo(mapRef.current);
+      if (k === 1) {
+        iconStyle = L.icon({
+          iconUrl: markerIcon,
+          iconSize: [30, 31],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41],
+          title: 'Початковий пункт',
+          alt: 'Початковий пункт',
+        });
+        k = k + 1;
+      } else {
+        iconStyle = L.icon({
+          iconUrl: markerIcon,
+          iconSize: [30, 31],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41],
+          title: 'Кінцевийвий пункт',
+          alt: 'Кінцевийвий пункт',
+        });
+      }
+      L.marker(coord, { icon: iconStyle }).addTo(mapRef.current);
     });
 
     // Додавання лінії маршруту

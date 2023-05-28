@@ -1,23 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import Icon from '@mui/material/Icon';
-
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import {
-  Container,
-  CardWrapper,
-  ProductName,
-  Title,
-  Wrapper,
-  Status,
-  Wrap,
-  WrapArrow,
-  Dates,
-  Pag,
-  Weight,
-} from './ShipmentList.styled';
+import { Title } from './ShipmentList.styled';
 import { useState } from 'react';
 import { FiltersBlock } from './FiltersBlock';
+import { ShipmentBlock } from './ShipmentBlock';
+import { Container } from './SharedLayout.styled';
 
 export const ShipmentList = ({ shipments }) => {
   const [filters, setFilters] = useState({
@@ -26,24 +12,6 @@ export const ShipmentList = ({ shipments }) => {
     originCity: '',
     destinationCity: '',
   });
-
-  const getStatusColor = status => {
-    let className = 'default';
-
-    switch (status) {
-      case 'В процесі':
-        className = 'in-progress';
-        break;
-      case 'Доставлено':
-        className = 'completed';
-        break;
-      default:
-        className = 'default';
-        break;
-    }
-
-    return className;
-  };
 
   const handleFilterChange = event => {
     const { name, value } = event.target;
@@ -89,39 +57,7 @@ export const ShipmentList = ({ shipments }) => {
       />
 
       {filteredShipments.map(shipment => (
-        <CardWrapper
-          key={shipment.id}
-          className={getStatusColor(shipment.status)}
-        >
-          <Link to={`${shipment.id}`}>
-            <ProductName>
-              {shipment.isInternational()
-                ? 'Міжнародне перевезення'
-                : 'Внутрішнє перевезення'}{' '}
-              №: {shipment.shipmentNumber}
-              <Weight>Вага: {shipment.weight} кг</Weight>
-              <Dates>Дата: {shipment.date.toLocaleDateString()}</Dates>
-            </ProductName>
-            <Status>Статус: {shipment.status}</Status>
-            <Wrapper>
-              <Wrap>
-                <Pag>Початковий пункт:</Pag>
-                <Pag>
-                  {shipment.origin.city}, {shipment.origin.country}
-                </Pag>
-              </Wrap>
-              <WrapArrow>
-                <Icon component={ArrowForwardIcon} />
-              </WrapArrow>
-              <Wrap>
-                <Pag> Кінцевий пункт:</Pag>
-                <Pag>
-                  {shipment.destination.city}, {shipment.destination.country}
-                </Pag>
-              </Wrap>
-            </Wrapper>
-          </Link>
-        </CardWrapper>
+        <ShipmentBlock key={shipment.id} shipment={shipment} condition={true} />
       ))}
     </Container>
   );
