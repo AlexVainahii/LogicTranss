@@ -4,13 +4,13 @@ import mapboxgl from 'mapbox-gl';
 mapboxgl.accessToken =
   'pk.eyJ1Ijoia2FzdGllbCIsImEiOiJjbGk1cm41c2YxaXdmM2xscHV3Y3pyZTFpIn0.t1krxDv5Pa232Pr6C0QSTw';
 
-const MapWithRoute = ({ coordinates, centrMap, markers, zoom }) => {
+const MapWithRoute = ({ coordinates, centrMap, markers, zoom = 6 }) => {
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
 
   useEffect(() => {
     // Ініціалізація мапи
-    console.table(coordinates, centrMap, markers, zoom, '1');
+    console.log(coordinates, centrMap, markers, zoom, '1');
     mapRef.current = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: 'mapbox://styles/mapbox/streets-v11',
