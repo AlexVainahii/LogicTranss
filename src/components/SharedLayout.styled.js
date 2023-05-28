@@ -8,7 +8,7 @@ export const Container = styled.div`
 `;
 
 export const Header = styled.header`
-  background-color: #333;
+  background: linear-gradient(to bottom, #000000, #333333);
 
   padding: 8px 0;
   border-bottom: 1px solid black;

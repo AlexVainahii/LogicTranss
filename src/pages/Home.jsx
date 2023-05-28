@@ -1,5 +1,3 @@
-import { Container } from 'components/SharedLayout.styled';
-
 export const Home = () => {
   return (
     <>

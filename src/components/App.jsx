@@ -1,12 +1,13 @@
 import { Route, Routes } from 'react-router-dom';
 import { About } from '../pages/About';
 import { Home } from '../pages/Home';
-import { ProductDetails } from '../pages/ProductDetails';
-import { Products } from '../pages/Products';
+import { ShipmentDetails } from '../pages/ShipmentDetails';
+import { Shipments } from '../pages/Shipment';
 import { Mission } from './Mission';
 import { Team } from './Team';
 import { Reviews } from './Reviews';
 import { SharedLayout } from './SharedLayout';
+import { Order } from 'pages/Order';
 
 export const App = () => {
   return (
@@ -18,8 +19,9 @@ export const App = () => {
           <Route path="team" element={<Team />} />
           <Route path="reviews" element={<Reviews />} />
         </Route>
-        <Route path="/products" element={<Products />} />
-        <Route path="/products/:id" element={<ProductDetails />} />
+        <Route path="/shipments" element={<Shipments />} />
+        <Route path="/shipments/:id" element={<ShipmentDetails />} />
+        <Route path="/order" element={<Order />}></Route>
       </Route>
     </Routes>
   );

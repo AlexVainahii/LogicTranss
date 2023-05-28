@@ -1,4 +1,3 @@
-import { Container } from 'components/SharedLayout.styled';
 import { Link, Outlet } from 'react-router-dom';
 
 export const About = () => {

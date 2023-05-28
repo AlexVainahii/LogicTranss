@@ -4,7 +4,6 @@ import {
   Header,
   Logo,
   Links,
-  Fone,
   Contacts,
 } from './SharedLayout.styled';
 import imagess from '../images/logo3.png';
@@ -18,8 +17,9 @@ export const SharedLayout = () => {
           </Logo>
           <nav>
             <Links to="/">Головна</Links>
+            <Links to="/shipments">Превезення</Links>
             <Links to="/about">Про компанію</Links>
-            <Links to="/products">Превезення</Links>
+            <Links to="/order">Замовити перевезення</Links>
           </nav>
         </Container>
       </Header>
