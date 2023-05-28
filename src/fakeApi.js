@@ -8,8 +8,8 @@ const cargoShipments = [
     status: 'В процесі',
     date: new Date('2023-05-01'),
     route: [
-      [30.5234, 50.4501],
-      [24.0297, 49.8397],
+      [50.4501, 30.5234],
+      [49.8397, 24.0297],
     ],
     isInternational() {
       return this.origin.country !== this.destination.country;
