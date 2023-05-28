@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-import mapboxgl from 'mapbox-gl';
+
+//import mapboxgl from 'mapbox-gl';
+import mapboxgl from 'mapbox-gl/dist/mapbox-gl-csp';
 
 mapboxgl.accessToken =
   'pk.eyJ1Ijoia2FzdGllbCIsImEiOiJjbGk1cm41c2YxaXdmM2xscHV3Y3pyZTFpIn0.t1krxDv5Pa232Pr6C0QSTw';
@@ -14,6 +16,7 @@ const MapWithRoute = ({ coordinates, centrMap, markers, zoom = 6 }) => {
     console.log(centrMap, '1c');
     console.log(markers, '1m');
     console.log(zoom, '1z');
+
     mapRef.current = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: 'mapbox://styles/mapbox/streets-v11',
