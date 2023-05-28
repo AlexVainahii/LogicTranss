@@ -8,7 +8,6 @@ const OrderForm = () => {
   const [weight, setWeight] = useState('');
   const [date, setDate] = useState('');
   const [suggestions, setSuggestions] = useState([]);
-  const [plaseId, setPlaseId] = useState(null);
 
   const fetchSuggestions = async searchValue => {
     try {

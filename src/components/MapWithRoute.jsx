@@ -60,7 +60,7 @@ const MapWithRoute = ({ coordinates, centrMap, markers, zoom }) => {
 
     // Очищення мапи під час розмонтування компонента
     return () => mapRef.current.remove();
-  }, [coordinates]);
+  }, [coordinates, centrMap, zoom, markers]);
 
   return <div ref={mapContainerRef} style={{ height: '400px' }} />;
 };

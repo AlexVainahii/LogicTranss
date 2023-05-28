@@ -460,49 +460,49 @@ export function getZoom(distance) {
     return 5;
   }
 }
-function calculateShippingCost(
-  distance,
-  weight,
-  pricePerKilometer,
-  transportType
-) {
-  // Розрахунок базової вартості перевезення
-  let baseCost = distance * pricePerKilometer;
+// function calculateShippingCost(
+//   distance,
+//   weight,
+//   pricePerKilometer,
+//   transportType
+// ) {
+//   // Розрахунок базової вартості перевезення
+//   let baseCost = distance * pricePerKilometer;
 
-  // Застосування націнки в залежності від типу перевезення
-  if (transportType === 'international') {
-    baseCost *= 1.5; // Наприклад, 50% націнка для міжнародного перевезення
-  } else if (transportType === 'domestic') {
-    baseCost *= 1; // Наприклад, без націнки для внутрішнього перевезення
-  }
+//   // Застосування націнки в залежності від типу перевезення
+//   if (transportType === 'international') {
+//     baseCost *= 1.5; // Наприклад, 50% націнка для міжнародного перевезення
+//   } else if (transportType === 'domestic') {
+//     baseCost *= 1; // Наприклад, без націнки для внутрішнього перевезення
+//   }
 
-  // Розрахунок націнки в залежності від ваги
-  if (weight > 1000) {
-    const overweightCharge = (weight - 1000) * 0.1; // Наприклад, $0.1 за кожен кілограм ваги понад 1000 кг
-    baseCost += overweightCharge;
-  }
+//   // Розрахунок націнки в залежності від ваги
+//   if (weight > 1000) {
+//     const overweightCharge = (weight - 1000) * 0.1; // Наприклад, $0.1 за кожен кілограм ваги понад 1000 кг
+//     baseCost += overweightCharge;
+//   }
 
-  return baseCost;
-}
-async function getCoordinatesByPlaceName(placeName) {
-  const apiKey = 'YOUR_MAPBOX_API_KEY'; // Замініть на свій ключ API Mapbox
+//   return baseCost;
+// }
+// async function getCoordinatesByPlaceName(placeName) {
+//   const apiKey = 'YOUR_MAPBOX_API_KEY'; // Замініть на свій ключ API Mapbox
 
-  try {
-    const response = await fetch(
-      `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
-        placeName
-      )}.json?access_token=${apiKey}`
-    );
-    const data = await response.json();
+//   try {
+//     const response = await fetch(
+//       `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
+//         placeName
+//       )}.json?access_token=${apiKey}`
+//     );
+//     const data = await response.json();
 
-    if (data.features && data.features.length > 0) {
-      const coordinates = data.features[0].center;
-      return coordinates;
-    } else {
-      throw new Error('Location not found');
-    }
-  } catch (error) {
-    console.error('Error:', error.message);
-    return null;
-  }
-}
+//     if (data.features && data.features.length > 0) {
+//       const coordinates = data.features[0].center;
+//       return coordinates;
+//     } else {
+//       throw new Error('Location not found');
+//     }
+//   } catch (error) {
+//     console.error('Error:', error.message);
+//     return null;
+//   }
+// }
