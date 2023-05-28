@@ -7,6 +7,7 @@ mapboxgl.accessToken =
 const MapWithRoute = ({ coordinates, centrMap, markers, zoom }) => {
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
+  console.table(coordinates, centrMap, markers, zoom);
 
   useEffect(() => {
     // Ініціалізація мапи
