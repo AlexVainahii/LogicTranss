@@ -1,13 +1,19 @@
 {
   "files": {
-    "main.css": "/react-homework-template/static/css/main.7acaea2f.css",
-    "main.js": "/react-homework-template/static/js/main.07d3183d.js",
-    "index.html": "/react-homework-template/index.html",
-    "main.7acaea2f.css.map": "/react-homework-template/static/css/main.7acaea2f.css.map",
-    "main.07d3183d.js.map": "/react-homework-template/static/js/main.07d3183d.js.map"
+    "main.css": "/LogicTranss/static/css/main.47084ae2.css",
+    "main.js": "/LogicTranss/static/js/main.ccbf7006.js",
+    "static/media/fon.jpg": "/LogicTranss/static/media/fon.a74ef51df712d95bb4d9.jpg",
+    "static/media/logo3.png": "/LogicTranss/static/media/logo3.b928d099fe8c5d6a36e6.png",
+    "static/media/team_img_2.jpg": "/LogicTranss/static/media/team_img_2.24d647d835a4d8cf7620.jpg",
+    "static/media/team_img_1.jpg": "/LogicTranss/static/media/team_img_1.b41aa1c067deda7714f7.jpg",
+    "static/media/team_img_4.jpg": "/LogicTranss/static/media/team_img_4.36d32df54776d28b1fec.jpg",
+    "static/media/team_img_3.jpg": "/LogicTranss/static/media/team_img_3.ecf9ba82fd78d8645eb2.jpg",
+    "index.html": "/LogicTranss/index.html",
+    "main.47084ae2.css.map": "/LogicTranss/static/css/main.47084ae2.css.map",
+    "main.ccbf7006.js.map": "/LogicTranss/static/js/main.ccbf7006.js.map"
   },
   "entrypoints": [
-    "static/css/main.7acaea2f.css",
-    "static/js/main.07d3183d.js"
+    "static/css/main.47084ae2.css",
+    "static/js/main.ccbf7006.js"
   ]
 }
