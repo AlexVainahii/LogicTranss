@@ -10,12 +10,15 @@ const MapWithRoute = ({ coordinates, centrMap, markers, zoom = 6 }) => {
 
   useEffect(() => {
     // Ініціалізація мапи
-    console.log(coordinates, centrMap, markers, zoom, '1');
+    console.log(coordinates, '1coor');
+    console.log(centrMap, '1c');
+    console.log(markers, '1m');
+    console.log(zoom, '1z');
     mapRef.current = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: 'mapbox://styles/mapbox/streets-v11',
       center: centrMap,
-      zoom: zoom,
+      zoom: 5,
     });
     console.table(coordinates, centrMap, markers, zoom, '2');
     // Додавання маркерів
