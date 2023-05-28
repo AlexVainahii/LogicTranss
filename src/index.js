@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter basename="/logictranss">
+    <BrowserRouter basename="/LogicTranss">
       <App />
     </BrowserRouter>
   </StrictMode>
