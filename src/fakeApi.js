@@ -553,23 +553,22 @@ const cargoShipments = [
     },
   },
 ];
-const updatedCargoShipments = cargoShipments.map(shipment => {
-  const updatedRoute = shipment.route.map(coordinates => {
-    return [coordinates[1], coordinates[0]]; // Міняємо довжину та широту місцями
-  });
+// const updatedCargoShipments = cargoShipments.map(shipment => {
+//   const updatedRoute = shipment.route.map(coordinates => {
+//     return [coordinates[1], coordinates[0]]; // Міняємо довжину та широту місцями
+//   });
 
-  return {
-    ...shipment,
-    route: updatedRoute,
-  };
-});
+//   return {
+//     ...shipment,
+//     route: updatedRoute,
+//   };
+// });
 export const getInternational = (origin, destination) => {
   return origin !== destination;
 };
 
 export const handleSaveToLocalStorage = () => {
-  const shipments = JSON.stringify(updatedCargoShipments);
-
+  const shipments = JSON.stringify(cargoShipments);
   localStorage.setItem('shipments1', shipments);
 
   console.log('Вантажні відправлення збережено в локальному сховищі');

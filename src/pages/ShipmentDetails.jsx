@@ -31,7 +31,7 @@ export const ShipmentDetails = () => {
             </IconButton>
             <Back>Повернутись до списку перевезень</Back>
           </Link>
-          <ShipmentBlock shipment={shipment} condition={2} />
+          <ShipmentBlock shipment={shipment} condition={0} />
           <MapWithRoute coordinates={shipment.route} shipment={shipment} />
         </Container>
       </div>

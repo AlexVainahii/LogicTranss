@@ -47,6 +47,7 @@ export const ShipmentList = () => {
     });
   };
   const handleStatusChange = (id, newStatus) => {
+    console.log(id, newStatus);
     const updatedShipments = shipments.map(shipment => {
       if (shipment.id === id) {
         return {
@@ -56,7 +57,8 @@ export const ShipmentList = () => {
       }
       return shipment;
     });
-
+    console.log(updatedShipments);
+    setShipments(updatedShipments);
     localStorage.setItem('shipments1', JSON.stringify(updatedShipments)); // Оновлення локального сховища
   };
   const handleDelete = id => {
@@ -66,7 +68,7 @@ export const ShipmentList = () => {
 
   const applyFilters = shipment => {
     const { shipmentNumber, status, originCity, destinationCity } = filters;
-    console.log(shipment);
+
     return (
       shipment.shipmentNumber
         .toLowerCase()

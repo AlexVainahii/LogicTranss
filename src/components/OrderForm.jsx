@@ -16,7 +16,7 @@ import { Link } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Title } from './ShipmentList.styled';
 import { ToastContainer, toast } from 'react-toastify';
-
+import { nanoid } from 'nanoid';
 const OrderForm = () => {
   const [origin, setOrigin] = useState('');
   const [destination, setDestination] = useState('');
@@ -149,7 +149,7 @@ const OrderForm = () => {
     // Отримання раніше збереженого масиву з локального сховища (якщо він існує)
     const storedOrders = getShipments();
     const newOrder = {
-      id: storedOrders.length + 1,
+      id: nanoid(),
       shipmentNumber: origin[0] + destination[0] + (storedOrders.length + 1),
       origin: {
         city: origin,

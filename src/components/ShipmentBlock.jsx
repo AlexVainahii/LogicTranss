@@ -62,7 +62,7 @@ export const ShipmentBlock = ({
         onClick={!condition ? e => e.preventDefault() : undefined}
         key={shipment.id}
         shipment={shipment}
-        condition={true}
+        condition={1}
         handleStatusChange={handleStatusChange}
         handleDelete={handleDelete}
       >
