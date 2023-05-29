@@ -5,10 +5,9 @@ import { FiltersBlock } from './FiltersBlock';
 import { ShipmentBlock } from './ShipmentBlock';
 import { Container } from './SharedLayout.styled';
 import { getShipments } from 'fakeApi';
-const shipmentsL = getShipments();
-console.log(shipmentsL);
 
 export const ShipmentList = () => {
+  const shipmentsL = getShipments();
   const [shipments, setShipments] = useState([...shipmentsL]);
   const [deleteId, setDeleteId] = useState(0);
   useEffect(() => {
@@ -57,7 +56,7 @@ export const ShipmentList = () => {
       }
       return shipment;
     });
-    setShipments(updatedShipments);
+
     localStorage.setItem('shipments1', JSON.stringify(updatedShipments)); // Оновлення локального сховища
   };
   const handleDelete = id => {
@@ -67,7 +66,7 @@ export const ShipmentList = () => {
 
   const applyFilters = shipment => {
     const { shipmentNumber, status, originCity, destinationCity } = filters;
-
+    console.log(shipment);
     return (
       shipment.shipmentNumber
         .toLowerCase()
@@ -80,7 +79,7 @@ export const ShipmentList = () => {
     );
   };
   const filteredShipments = shipments.filter(applyFilters);
-
+  const condition = 1;
   return (
     <Container>
       <Title>Вантажні перевезення</Title>
@@ -94,7 +93,7 @@ export const ShipmentList = () => {
         <ShipmentBlock
           key={shipment.id}
           shipment={shipment}
-          condition={true}
+          condition={condition}
           handleStatusChange={handleStatusChange}
           handleDelete={handleDelete}
         />

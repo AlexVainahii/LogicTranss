@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import markerIcon from '../images/marker-icon.png';
+import { getDistance, getMarker, getZoom, getcentrMap } from 'fakeApi';
 var iconStyle = L.icon({
   iconUrl: markerIcon,
   iconSize: [30, 31],
@@ -12,10 +13,15 @@ var iconStyle = L.icon({
   alt: 'Початковий пункт',
 });
 
-const MapWithRoute = ({ coordinates, centrMap, markers, zoom = 6 }) => {
+const MapWithRoute = ({ coordinates, shipment }) => {
+  const centrMap = getcentrMap(shipment);
+  const markers = getMarker(shipment);
+  const distance = getDistance(shipment.route);
+  const zoom = getZoom(distance);
+  console.log(shipment.route, zoom);
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
-
+  console.log(shipment, distance, zoom, centrMap, markers);
   useEffect(() => {
     mapRef.current = L.map(mapContainerRef.current).setView(centrMap, zoom);
 

@@ -563,6 +563,9 @@ const updatedCargoShipments = cargoShipments.map(shipment => {
     route: updatedRoute,
   };
 });
+export const getInternational = (origin, destination) => {
+  return origin !== destination;
+};
 
 export const handleSaveToLocalStorage = () => {
   const shipments = JSON.stringify(updatedCargoShipments);
@@ -606,86 +609,65 @@ export const getMarker = shipment => {
   route[1][1] = p;
   return route;
 };
-export function getDistance(shipment) {
+export function getDistance(route) {
   const earthRadius = 6371; // Радіус Землі в кілометрах
 
-  const dLat = toRadians(shipment.route[1][0] - shipment.route[0][0]);
-  const dLon = toRadians(shipment.route[1][1] - shipment.route[0][1]);
+  const dLat = toRadians(route[1][0] - route[0][0]);
+  const dLon = toRadians(route[1][1] - route[0][1]);
 
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(toRadians(shipment.route[0][0])) *
-      Math.cos(toRadians(shipment.route[1][0])) *
+    Math.cos(toRadians(route[0][0])) *
+      Math.cos(toRadians(route[1][0])) *
       Math.sin(dLon / 2) *
       Math.sin(dLon / 2);
 
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   const distance = earthRadius * c;
 
-  return distance;
+  return Math.round(distance);
 }
 
 function toRadians(degrees) {
   return degrees * (Math.PI / 180);
 }
 export function getZoom(distance) {
-  if (distance >= 2000) {
+  if (distance > 2000) {
     return 1;
   }
-  if (distance >= 1200) {
+  if (distance > 1600) {
     return 2;
   }
-  if (distance >= 1200) {
+  if (distance > 1200) {
     return 3;
   }
 
-  if (distance >= 800) {
+  if (distance > 800) {
     return 4;
   }
+  return 5;
 }
-// function calculateShippingCost(
-//   distance,
-//   weight,
-//   pricePerKilometer,
-//   transportType
-// ) {
-//   // Розрахунок базової вартості перевезення
-//   let baseCost = distance * pricePerKilometer;
+export function calculateShippingCost(
+  distance,
+  weight,
+  pricePerKilometer,
+  transportType
+) {
+  // Розрахунок базової вартості перевезення
+  let baseCost = distance * pricePerKilometer;
 
-//   // Застосування націнки в залежності від типу перевезення
-//   if (transportType === 'international') {
-//     baseCost *= 1.5; // Наприклад, 50% націнка для міжнародного перевезення
-//   } else if (transportType === 'domestic') {
-//     baseCost *= 1; // Наприклад, без націнки для внутрішнього перевезення
-//   }
+  // Застосування націнки в залежності від типу перевезення
+  if (transportType) {
+    baseCost *= 1.5; // Наприклад, 50% націнка для міжнародного перевезення
+  } else {
+    baseCost *= 1; // Наприклад, без націнки для внутрішнього перевезення
+  }
 
-//   // Розрахунок націнки в залежності від ваги
-//   if (weight > 1000) {
-//     const overweightCharge = (weight - 1000) * 0.1; // Наприклад, $0.1 за кожен кілограм ваги понад 1000 кг
-//     baseCost += overweightCharge;
-//   }
+  // Розрахунок націнки в залежності від ваги
+  if (weight > 1000) {
+    const overweightCharge = (weight - 1000) * 0.1; // Наприклад, $0.1 за кожен кілограм ваги понад 1000 кг
+    baseCost += overweightCharge;
+  }
 
-//   return baseCost;
-// }
-// async function getCoordinatesByPlaceName(placeName) {
-//   const apiKey = 'YOUR_MAPBOX_API_KEY'; // Замініть на свій ключ API Mapbox
-
-//   try {
-//     const response = await fetch(
-//       `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
-//         placeName
-//       )}.json?access_token=${apiKey}`
-//     );
-//     const data = await response.json();
-
-//     if (data.features && data.features.length > 0) {
-//       const coordinates = data.features[0].center;
-//       return coordinates;
-//     } else {
-//       throw new Error('Location not found');
-//     }
-//   } catch (error) {
-//     console.error('Error:', error.message);
-//     return null;
-//   }
-// }
+  return Math.round(baseCost);
+}

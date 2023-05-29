@@ -8,6 +8,8 @@ import { Team } from './Team';
 import { Reviews } from './Reviews';
 import { SharedLayout } from './SharedLayout';
 import { Order } from 'pages/Order';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const App = () => {
   return (

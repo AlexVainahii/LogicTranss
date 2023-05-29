@@ -94,7 +94,7 @@ export const ShipmentBlock = ({
         </Wrapper>
       </Link>
 
-      {condition && (
+      {condition === 1 && (
         <ButtonWrapper>
           {shipment.status !== 'В процесі' && (
             <Tooltip title="Встановити статус 'Вибрати'" placement="left">

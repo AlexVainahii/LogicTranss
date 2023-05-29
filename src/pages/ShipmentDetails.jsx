@@ -1,11 +1,5 @@
 import MapWithRoute from 'components/MapWithRoute';
-import {
-  getDistance,
-  getMarker,
-  getShipmentsById,
-  getZoom,
-  getcentrMap,
-} from 'fakeApi';
+import { getShipmentsById } from 'fakeApi';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { Container } from 'components/SharedLayout.styled';
 import { ShipmentBlock } from 'components/ShipmentBlock';
@@ -15,10 +9,7 @@ import { Back } from 'components/ShipmentBlock.styled';
 export const ShipmentDetails = () => {
   const { id } = useParams();
   const shipment = getShipmentsById(Number(id));
-  const centrMap = getcentrMap(shipment);
-  const markers = getMarker(shipment);
-  const distance = getDistance(shipment);
-  const zoom = getZoom(distance);
+
   const location = useLocation();
   const backLinkHref = location.state?.from ?? '/shipments';
 
@@ -40,14 +31,8 @@ export const ShipmentDetails = () => {
             </IconButton>
             <Back>Повернутись до списку перевезень</Back>
           </Link>
-          <ShipmentBlock shipment={shipment} condition={false} />
-          <MapWithRoute
-            coordinates={shipment.route}
-            centrMap={centrMap}
-            markers={markers}
-            zoom={zoom}
-            shipment={shipment}
-          />
+          <ShipmentBlock shipment={shipment} condition={2} />
+          <MapWithRoute coordinates={shipment.route} shipment={shipment} />
         </Container>
       </div>
     </main>
