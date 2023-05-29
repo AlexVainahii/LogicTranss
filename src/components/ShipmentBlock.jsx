@@ -60,6 +60,11 @@ export const ShipmentBlock = ({
         to={`${shipment.id}`}
         state={{ from: location }}
         onClick={!condition ? e => e.preventDefault() : undefined}
+        key={shipment.id}
+        shipment={shipment}
+        condition={true}
+        handleStatusChange={handleStatusChange}
+        handleDelete={handleDelete}
       >
         <ProductName>
           {isInternational(shipment)
@@ -89,50 +94,52 @@ export const ShipmentBlock = ({
         </Wrapper>
       </Link>
 
-      <ButtonWrapper>
-        {shipment.status !== 'В процесі' && (
-          <Tooltip title="Встановити статус 'Вибрати'" placement="left">
-            <StyledIconRadioButton
-              onClick={() => handleStatusChange(shipment.id, 'В процесі')}
-              style={{
-                width: '24px',
-                height: '24px',
-              }}
-            >
-              <RadioButtonUncheckedIcon />
-            </StyledIconRadioButton>
-          </Tooltip>
-        )}
-        {shipment.status !== 'Відмінено' && (
-          <Tooltip title="Встановити статус 'Відмінено'" placement="left">
-            <StyledIconCancelButton
-              onClick={() => handleStatusChange(shipment.id, 'Відмінено')}
+      {condition && (
+        <ButtonWrapper>
+          {shipment.status !== 'В процесі' && (
+            <Tooltip title="Встановити статус 'Вибрати'" placement="left">
+              <StyledIconRadioButton
+                onClick={() => handleStatusChange(shipment.id, 'В процесі')}
+                style={{
+                  width: '24px',
+                  height: '24px',
+                }}
+              >
+                <RadioButtonUncheckedIcon />
+              </StyledIconRadioButton>
+            </Tooltip>
+          )}
+          {shipment.status !== 'Відмінено' && (
+            <Tooltip title="Встановити статус 'Відмінено'" placement="left">
+              <StyledIconCancelButton
+                onClick={() => handleStatusChange(shipment.id, 'Відмінено')}
+                style={{ width: '24px', height: '24px' }}
+              >
+                <CancelIcon />
+              </StyledIconCancelButton>
+            </Tooltip>
+          )}
+          {shipment.status !== 'Доставлено' && (
+            <Tooltip title="Встановити статус 'Доставлено'" placement="left">
+              <StyledIconCheckButton
+                onClick={() => handleStatusChange(shipment.id, 'Доставлено')}
+                disabled={shipment.status === 'Доставлено'}
+                style={{ width: '24px', height: '24px' }}
+              >
+                <CheckIcon />
+              </StyledIconCheckButton>
+            </Tooltip>
+          )}
+          <Tooltip title="Видалити перевезення" placement="left">
+            <StyledIconDeleteButton
+              onClick={() => handleDelete(shipment.id)}
               style={{ width: '24px', height: '24px' }}
             >
-              <CancelIcon />
-            </StyledIconCancelButton>
+              <DeleteIcon />
+            </StyledIconDeleteButton>
           </Tooltip>
-        )}
-        {shipment.status !== 'Доставлено' && (
-          <Tooltip title="Встановити статус 'Доставлено'" placement="left">
-            <StyledIconCheckButton
-              onClick={() => handleStatusChange(shipment.id, 'Доставлено')}
-              disabled={shipment.status === 'Доставлено'}
-              style={{ width: '24px', height: '24px' }}
-            >
-              <CheckIcon />
-            </StyledIconCheckButton>
-          </Tooltip>
-        )}
-        <Tooltip title="Видалити перевезення" placement="left">
-          <StyledIconDeleteButton
-            onClick={() => handleDelete(shipment.id)}
-            style={{ width: '24px', height: '24px' }}
-          >
-            <DeleteIcon />
-          </StyledIconDeleteButton>
-        </Tooltip>
-      </ButtonWrapper>
+        </ButtonWrapper>
+      )}
     </CardWrapper>
   );
 };
