@@ -13,7 +13,6 @@
     "@testing-library/jest-dom": "^5.16.3",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
-    "algolia-places-react": "^1.6.1",
     "axios": "^1.4.0",
     "firebase": "^9.22.1",
     "leaflet": "^1.9.4",
