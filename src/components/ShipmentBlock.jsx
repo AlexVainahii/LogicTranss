@@ -1,7 +1,13 @@
+import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Icon from '@mui/material/Icon';
+import Tooltip from '@mui/material/Tooltip';
 
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
+import CancelIcon from '@mui/icons-material/Cancel';
+import CheckIcon from '@mui/icons-material/Check';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
   CardWrapper,
   ProductName,
@@ -12,7 +18,15 @@ import {
   Dates,
   Pag,
   Weight,
+  ButtonWrapper,
 } from './ShipmentBlock.styled';
+import {
+  StyledIconRadioButton,
+  StyledIconCancelButton,
+  StyledIconCheckButton,
+  StyledIconDeleteButton,
+} from './ShipmentBlockIcon.styled';
+import { isInternational } from 'fakeApi';
 
 const getStatusColor = status => {
   let className = 'default';
@@ -31,8 +45,15 @@ const getStatusColor = status => {
 
   return className;
 };
-export const ShipmentBlock = ({ shipment, condition }) => {
+
+export const ShipmentBlock = ({
+  shipment,
+  condition,
+  handleStatusChange,
+  handleDelete,
+}) => {
   const location = useLocation();
+
   return (
     <CardWrapper key={shipment.id} className={getStatusColor(shipment.status)}>
       <Link
@@ -41,12 +62,12 @@ export const ShipmentBlock = ({ shipment, condition }) => {
         onClick={!condition ? e => e.preventDefault() : undefined}
       >
         <ProductName>
-          {shipment.isInternational()
+          {isInternational(shipment)
             ? 'Міжнародне перевезення'
             : 'Внутрішнє перевезення'}{' '}
           №: {shipment.shipmentNumber}
           <Weight>Вага: {shipment.weight} кг</Weight>
-          <Dates>Дата: {shipment.date.toLocaleDateString()}</Dates>
+          <Dates>Дата: {new Date(shipment.date).toLocaleDateString()}</Dates>
         </ProductName>
         <Status>Статус: {shipment.status}</Status>
         <Wrapper>
@@ -60,13 +81,58 @@ export const ShipmentBlock = ({ shipment, condition }) => {
             <Icon component={ArrowForwardIcon} />
           </WrapArrow>
           <Wrap>
-            <Pag> Кінцевий пункт:</Pag>
+            <Pag>Кінцевий пункт:</Pag>
             <Pag>
               {shipment.destination.city}, {shipment.destination.country}
             </Pag>
           </Wrap>
         </Wrapper>
       </Link>
+
+      <ButtonWrapper>
+        {shipment.status !== 'В процесі' && (
+          <Tooltip title="Встановити статус 'Вибрати'" placement="left">
+            <StyledIconRadioButton
+              onClick={() => handleStatusChange(shipment.id, 'В процесі')}
+              style={{
+                width: '24px',
+                height: '24px',
+              }}
+            >
+              <RadioButtonUncheckedIcon />
+            </StyledIconRadioButton>
+          </Tooltip>
+        )}
+        {shipment.status !== 'Відмінено' && (
+          <Tooltip title="Встановити статус 'Відмінено'" placement="left">
+            <StyledIconCancelButton
+              onClick={() => handleStatusChange(shipment.id, 'Відмінено')}
+              style={{ width: '24px', height: '24px' }}
+            >
+              <CancelIcon />
+            </StyledIconCancelButton>
+          </Tooltip>
+        )}
+        {shipment.status !== 'Доставлено' && (
+          <Tooltip title="Встановити статус 'Доставлено'" placement="left">
+            <StyledIconCheckButton
+              onClick={() => handleStatusChange(shipment.id, 'Доставлено')}
+              disabled={shipment.status === 'Доставлено'}
+              style={{ width: '24px', height: '24px' }}
+            >
+              <CheckIcon />
+            </StyledIconCheckButton>
+          </Tooltip>
+        )}
+        <Tooltip title="Видалити перевезення" placement="left">
+          <StyledIconDeleteButton
+            onClick={() => handleDelete(shipment.id)}
+            style={{ width: '24px', height: '24px' }}
+          >
+            <DeleteIcon />
+          </StyledIconDeleteButton>
+        </Tooltip>
+      </ButtonWrapper>
     </CardWrapper>
   );
 };

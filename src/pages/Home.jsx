@@ -1,3 +1,5 @@
+import { handleSaveToLocalStorage } from 'fakeApi';
+
 export const Home = () => {
   return (
     <>
@@ -13,7 +15,9 @@ export const Home = () => {
             перевезення вантажів по всьому світу.
           </p>
           <p>З нами ваші вантажі доставляться швидко, безпечно і вчасно.</p>
-
+          <button type="button" onClick={handleSaveToLocalStorage}>
+            Зберегти до Firebase
+          </button>
           <h3>Наші послуги</h3>
           <ul>
             <li>Міжнародні перевезення</li>

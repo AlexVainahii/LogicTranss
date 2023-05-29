@@ -27,6 +27,7 @@ export const Weight = styled.div`
   background: none;
 `;
 export const CardWrapper = styled.div`
+  display: flex;
   border: 1px solid black;
   border-radius: 4px;
   margin-top: 10px;
@@ -35,6 +36,7 @@ export const CardWrapper = styled.div`
     text-decoration: none;
     color: black;
     background: none;
+    width: 800px;
   }
 `;
 
@@ -56,4 +58,12 @@ export const Pag = styled.p`
 `;
 export const Back = styled.h3`
   margin: 5px;
+`;
+export const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: column;
+  width: 20px;
+  padding: 14px;
 `;

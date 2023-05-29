@@ -28,7 +28,12 @@ export const ShipmentDetails = () => {
         <Container>
           <Link
             to={backLinkHref}
-            style={{ display: 'flex', alignItems: 'center' }}
+            style={{
+              textDecoration: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              color: 'inherit',
+            }}
           >
             <IconButton color="primary">
               <ArrowBackIcon />

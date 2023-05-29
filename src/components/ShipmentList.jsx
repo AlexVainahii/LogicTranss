@@ -1,11 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Title } from './ShipmentList.styled';
 import { useState } from 'react';
 import { FiltersBlock } from './FiltersBlock';
 import { ShipmentBlock } from './ShipmentBlock';
 import { Container } from './SharedLayout.styled';
+import { getShipments } from 'fakeApi';
+const shipmentsL = getShipments();
+console.log(shipmentsL);
 
-export const ShipmentList = ({ shipments }) => {
+export const ShipmentList = () => {
+  const [shipments, setShipments] = useState([...shipmentsL]);
+  const [deleteId, setDeleteId] = useState(0);
+  useEffect(() => {
+    // При зміні масиву відправлень, оновити локальне сховище
+    localStorage.setItem('shipments1', JSON.stringify(shipments));
+  }, [shipments]);
+  useEffect(() => {
+    if (deleteId !== 0) {
+      const updatedShipments = shipments.filter(
+        shipment => shipment.id !== deleteId
+      );
+      setDeleteId(0);
+      setShipments(updatedShipments);
+    }
+  }, [deleteId, shipments]);
   const [filters, setFilters] = useState({
     shipmentNumber: '',
     status: '',
@@ -29,6 +47,23 @@ export const ShipmentList = ({ shipments }) => {
       destinationCity: '',
     });
   };
+  const handleStatusChange = (id, newStatus) => {
+    const updatedShipments = shipments.map(shipment => {
+      if (shipment.id === id) {
+        return {
+          ...shipment,
+          status: newStatus,
+        };
+      }
+      return shipment;
+    });
+    setShipments(updatedShipments);
+    localStorage.setItem('shipments1', JSON.stringify(updatedShipments)); // Оновлення локального сховища
+  };
+  const handleDelete = id => {
+    // Повернути функцію обробника події, яка виконує видалення
+    setDeleteId(id);
+  };
 
   const applyFilters = shipment => {
     const { shipmentNumber, status, originCity, destinationCity } = filters;
@@ -44,7 +79,6 @@ export const ShipmentList = ({ shipments }) => {
         .includes(destinationCity.toLowerCase())
     );
   };
-
   const filteredShipments = shipments.filter(applyFilters);
 
   return (
@@ -57,7 +91,13 @@ export const ShipmentList = ({ shipments }) => {
       />
 
       {filteredShipments.map(shipment => (
-        <ShipmentBlock key={shipment.id} shipment={shipment} condition={true} />
+        <ShipmentBlock
+          key={shipment.id}
+          shipment={shipment}
+          condition={true}
+          handleStatusChange={handleStatusChange}
+          handleDelete={handleDelete}
+        />
       ))}
     </Container>
   );
