@@ -72,13 +72,12 @@ export const ShipmentList = () => {
             .includes(destinationCity.toLowerCase())
         );
       };
-      console.log(shipments);
+
       const filteredShipments = shipments.filter(applyFilters);
       setFilteredShipments(filteredShipments);
     }
   }, [shipments, filters]);
 
-  const condition = 1;
   return (
     <Container>
       <Title>Вантажні перевезення</Title>
@@ -91,11 +90,7 @@ export const ShipmentList = () => {
             handleResetFilters={handleResetFilters}
           />
           {filteredShipments.map(shipment => (
-            <ShipmentBlock
-              key={shipment.id}
-              shipment={shipment}
-              condition={condition}
-            />
+            <ShipmentBlock key={shipment.id} shipment={shipment} />
           ))}
         </>
       )}

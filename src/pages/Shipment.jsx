@@ -1,8 +1,9 @@
 import { ShipmentList } from '../components/ShipmentList';
+import backgroundImage from '../images/fon.jpg';
 
 export const Shipments = () => {
   return (
-    <main>
+    <main style={{ backgroundImage: `url(${backgroundImage})` }}>
       <div>
         <ShipmentList />
       </div>

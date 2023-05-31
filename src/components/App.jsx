@@ -3,12 +3,12 @@ import { About } from '../pages/About';
 import { Home } from '../pages/Home';
 import { ShipmentDetails } from '../pages/ShipmentDetails';
 import { Shipments } from '../pages/Shipment';
-import { Mission } from './Mission';
 import { Team } from './Team';
 import { Reviews } from './Reviews';
 import { SharedLayout } from './SharedLayout';
 import { Order } from 'pages/Order';
 import 'react-toastify/dist/ReactToastify.css';
+import { AboutUs } from './AboutUs';
 
 export const App = () => {
   return (
@@ -16,13 +16,14 @@ export const App = () => {
       <Route path="/" element={<SharedLayout />}>
         <Route index element={<Home />} />
         <Route path="/about" element={<About />}>
-          <Route path="mission" element={<Mission />} />
+          <Route index element={<AboutUs />} />
           <Route path="team" element={<Team />} />
           <Route path="reviews" element={<Reviews />} />
         </Route>
         <Route path="/shipments" element={<Shipments />} />
         <Route path="/shipments/:id" element={<ShipmentDetails />} />
         <Route path="/order" element={<Order />}></Route>
+        <Route path="/order/:id" element={<Order />}></Route>
       </Route>
     </Routes>
   );

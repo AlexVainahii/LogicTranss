@@ -46,7 +46,7 @@ export const ShipmentDetails = () => {
               <Back>Повернутись до списку перевезень</Back>
             </Link>
 
-            <ShipmentBlock shipment={shipment} condition={0} />
+            <ShipmentBlock shipment={shipment} />
 
             <MapWithRoute shipment={shipment} />
           </Container>

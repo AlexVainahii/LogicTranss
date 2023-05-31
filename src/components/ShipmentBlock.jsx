@@ -39,7 +39,7 @@ const getStatusColor = status => {
   return className;
 };
 
-export const ShipmentBlock = ({ shipment, condition }) => {
+export const ShipmentBlock = ({ shipment }) => {
   const location = useLocation();
 
   return (
@@ -51,10 +51,8 @@ export const ShipmentBlock = ({ shipment, condition }) => {
         <Link
           to={`${shipment.id}`}
           state={{ from: location }}
-          onClick={!condition ? e => e.preventDefault() : undefined}
           key={shipment.id}
           shipment={shipment}
-          condition={1}
         >
           <div style={{ padding: ' 0', background: 'none' }}>
             <ProductName>
@@ -97,7 +95,13 @@ export const ShipmentBlock = ({ shipment, condition }) => {
       </Tooltip>
       {shipment.statusShip === 'В очікуванні' && (
         <ButtonWrapper>
-          {shipment.status !== 'В процесі' && (
+          <Link
+            to={`/order/${shipment.id}`}
+            state={{ from: location }}
+            key={shipment.id}
+            shipment={shipment}
+            style={{ width: '20px' }}
+          >
             <Tooltip
               title="Додати свій вантаж до даного перевезення"
               placement="left"
@@ -111,7 +115,7 @@ export const ShipmentBlock = ({ shipment, condition }) => {
                 <AddCircleOutlineIcon />
               </StyledIconAdd>
             </Tooltip>
-          )}
+          </Link>
         </ButtonWrapper>
       )}
     </CardWrapper>

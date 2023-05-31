@@ -1,19 +1,55 @@
-import { ReviewAuthor, ReviewContainer, ReviewContent } from './Rewiews.styled';
+import { useEffect, useState } from 'react';
+import { nanoid } from 'nanoid';
+import {
+  ReviewAuthor,
+  ReviewContainer,
+  ReviewContent,
+  ReviewForm,
+  ReviewInput,
+  ReviewSubmitButton,
+} from './Reviews.styled';
+import { addReviews, getReviews } from 'fakeApi';
+
 export const Reviews = () => {
-  const reviews = [
-    {
-      id: 1,
-      author: 'Іван Петров',
-      content:
-        'Дуже задоволений послугами LOGICTRANS. Швидка доставка і висока якість обслуговування.',
-    },
-    {
-      id: 2,
-      author: 'Олена Сидоренко',
-      content:
-        'Завжди надійна компанія для наших логістичних потреб. Рекомендую LOGICTRANS усім!',
-    },
-  ];
+  const [reviews, setReviews] = useState([]);
+
+  const [newReviewAuthor, setNewReviewAuthor] = useState('');
+  const [newReviewContent, setNewReviewContent] = useState('');
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const fetchedReviews = await getReviews();
+        setReviews(fetchedReviews);
+      } catch (error) {
+        console.error('Помилка при отриманні перевезень:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+  const handleReviewAuthorChange = event => {
+    setNewReviewAuthor(event.target.value);
+  };
+
+  const handleReviewContentChange = event => {
+    setNewReviewContent(event.target.value);
+  };
+
+  const handleReviewSubmit = event => {
+    event.preventDefault();
+    if (newReviewAuthor.trim() !== '' && newReviewContent.trim() !== '') {
+      const newReview = {
+        id: nanoid(),
+        author: newReviewAuthor,
+        content: newReviewContent,
+      };
+      addReviews(newReview);
+      setReviews([...reviews, newReview]);
+      setNewReviewAuthor('');
+      setNewReviewContent('');
+    }
+  };
+
   return (
     <section>
       <div>
@@ -24,6 +60,25 @@ export const Reviews = () => {
             <ReviewContent>{review.content}</ReviewContent>
           </ReviewContainer>
         ))}
+        <ReviewForm onSubmit={handleReviewSubmit}>
+          <ReviewInput
+            type="text"
+            placeholder="Ваше ім'я"
+            value={newReviewAuthor}
+            onChange={handleReviewAuthorChange}
+            required
+          />
+          <ReviewInput
+            type="text"
+            placeholder="Ваш відгук"
+            value={newReviewContent}
+            onChange={handleReviewContentChange}
+            required
+          />
+          <ReviewSubmitButton type="submit">
+            Надіслати відгук
+          </ReviewSubmitButton>
+        </ReviewForm>
       </div>
     </section>
   );
