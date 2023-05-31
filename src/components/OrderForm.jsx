@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import {
+  addOrders,
   calculateShippingCost,
   getDistance,
   getInternational,
-  getShipments,
 } from 'fakeApi';
 import { useEffect } from 'react';
 import MapWithRoute from './MapWithRoute';
@@ -18,47 +18,28 @@ import { Title } from './ShipmentList.styled';
 import { ToastContainer, toast } from 'react-toastify';
 import { nanoid } from 'nanoid';
 const OrderForm = () => {
-  const [origin, setOrigin] = useState('');
-  const [destination, setDestination] = useState('');
+  const currentDate = new Date().toISOString().split('T')[0];
+  const [originCity, setOriginCity] = useState('');
+  const [destinationCity, setDestinationCity] = useState('');
   const [originCountry, setOriginCountry] = useState('');
   const [destinationCountry, setDestinationCountry] = useState('');
-  const [weight, setWeight] = useState(0);
-  const [date, setDate] = useState('');
-  const [route, setRoute] = useState([[], []]);
+  const [weight, setWeight] = useState(50);
+  const [originDate, setOriginDate] = useState(currentDate);
+  const [destinationDate, setDestinationDate] = useState(currentDate);
+  const [originRoute, setOriginRoute] = useState(null);
+  const [destinationRoute, setdDestinationRoute] = useState(null);
   const [suggestedOrigins, setSuggestedOrigins] = useState([]);
   const [suggestedDestinations, setSuggestedDestinations] = useState([]);
-  const [shippingCost, setShippingCost] = useState(0);
+  const [cost, setCost] = useState(0);
   const [distance, setDistance] = useState(0);
   const [createElement, setCreateElement] = useState(null);
   const [shipment, setShipment] = useState(null);
-  console.log(
-    '1',
-    origin,
-    '2',
-    originCountry,
-    '3',
-    destination,
-    '4',
-    destinationCountry,
-    '5',
-    weight,
-    '6',
-    date,
-    '7',
-    route,
-    '8',
-    shippingCost,
-    '9',
-    distance,
-    '10',
-    createElement,
-    '11',
-    shipment,
-    '12'
-  );
-  const handleOriginChange = async event => {
+  const [client, setClient] = useState('');
+  const [originFlag, setOriginFlag] = useState(false);
+  const [destinationFlag, setoDestinationFlag] = useState(false);
+  const handleOriginCityChange = async event => {
     const value = event.target.value;
-    setOrigin(value);
+    setOriginCity(value);
 
     try {
       const response = await axios.get(
@@ -69,15 +50,16 @@ const OrderForm = () => {
       const suggestions = response.data.results;
       console.log(suggestions);
       setSuggestedOrigins(suggestions);
+      setOriginFlag(false);
     } catch (error) {
       console.log('Помилка запиту геокодування:', error.message);
       setSuggestedOrigins([]);
     }
   };
 
-  const handleDestinationChange = async event => {
+  const handleDestinationCityChange = async event => {
     const value = event.target.value;
-    setDestination(value);
+    setDestinationCity(value);
 
     try {
       const response = await axios.get(
@@ -87,6 +69,7 @@ const OrderForm = () => {
       );
       const suggestions = response.data.results;
       setSuggestedDestinations(suggestions);
+      setoDestinationFlag(false);
     } catch (error) {
       console.log('Помилка запиту геокодування:', error.message);
       setSuggestedDestinations([]);
@@ -96,10 +79,10 @@ const OrderForm = () => {
   const handleSuggestionOriginSelected = suggestion => {
     if (suggestion.components) {
       const { city, country } = suggestion.components;
-      setOrigin(city);
+      setOriginCity(city);
       setOriginCountry(country);
-      const { lat, lng } = suggestion.geometry;
-      setRoute(prevRoute => [[lat, lng], prevRoute[1]]);
+      setOriginRoute(suggestion.geometry);
+      setOriginFlag(true);
     }
     setSuggestedOrigins([]);
   };
@@ -107,87 +90,91 @@ const OrderForm = () => {
     if (suggestion.components) {
       const { city, country } = suggestion.components;
 
-      setDestination(city);
+      setDestinationCity(city);
       setDestinationCountry(country);
-      const { lat, lng } = suggestion.geometry;
-      setRoute(prevRoute => [prevRoute[0], [lat, lng]]);
+      setoDestinationFlag(true);
+      setdDestinationRoute(suggestion.geometry);
     }
     setSuggestedDestinations([]);
   };
 
-  const handleDateChange = event => {
+  const handleOriginDateChange = event => {
     const value = event.target.value;
-    setDate(value);
+    setOriginDate(value);
   };
-
+  const handleClientChange = event => {
+    const value = event.target.value;
+    setClient(value);
+  };
   const handleWeightChange = event => {
     const value = event.target.value;
     setWeight(value);
   };
   useEffect(() => {
     //Отримуємо відстань у кілометрах
-    if (origin !== '' && destination !== '' && weight !== 0) {
-      const newDistance = getDistance(route);
+    if (originFlag && destinationFlag && weight !== 0) {
+      const newDistance = getDistance(originRoute, destinationRoute);
       const shippingCost = calculateShippingCost(
         newDistance,
         weight,
         10,
-        getInternational(origin, destination)
+        getInternational(originCity, destinationCity)
       );
       // Викликаємо функцію calculateShippingCost
       setDistance(newDistance);
-      setShippingCost(shippingCost);
+      setCost(shippingCost);
     }
-  }, [origin, destination, route, weight]);
+  }, [
+    originCity,
+    destinationCity,
+    originRoute,
+    destinationRoute,
+    originFlag,
+    destinationFlag,
+    weight,
+  ]);
 
-  const currentDate = new Date().toISOString().split('T')[0];
   const handleFormSubmit = event => {
     event.preventDefault();
 
     // Створення нового об'єкта з введеними даними
-
-    // Отримання раніше збереженого масиву з локального сховища (якщо він існує)
-    const storedOrders = getShipments();
     const newOrder = {
       id: nanoid(),
-      shipmentNumber: origin[0] + destination[0] + (storedOrders.length + 1),
-      origin: {
-        city: origin,
-        country: originCountry,
-      },
-      destination: {
-        city: destination,
-        country: destinationCountry,
-      },
-      weight: Number(weight),
-      status: 'В процесі',
-      date: new Date(date),
-      route: route,
-      isInternational() {
-        return this.origin.country !== this.destination.country;
-      },
+      shipmentNum: originCity[0] + destinationCity[0] + distance + client,
+      originCity: originCity.toString(),
+      originCountry: originCountry.toString(),
+
+      destinationCity: destinationCity.toString(),
+      destinationCountry: destinationCountry.toString(),
+      weight: [Number(weight)],
+      statusShip: 'В очікуванні',
+      originDate: new Date(originDate).toLocaleDateString,
+      destinationDate: new Date(destinationDate).toLocaleDateString,
+      originRoute: originRoute,
+      destinationRoute: destinationRoute,
+      isInternational: getInternational(originCountry, destinationCountry),
       distance: distance,
-      shippingCost: shippingCost,
+      cost: [cost],
+      client: [client],
     };
 
     console.log(newOrder);
 
-    // Додавання нового замовлення до масиву
-    const shipments = [newOrder, ...storedOrders];
-    // Збереження оновленого масиву в локальне сховище
-    console.log(shipments);
-    localStorage.setItem('shipments1', JSON.stringify(shipments));
+    addOrders(newOrder);
+
     setShipment(newOrder);
     setCreateElement(true);
     // Очищення форми після збереження
-    setOrigin('');
-    setDestination('');
+    setOriginCity('');
+    setDestinationCity('');
     setOriginCountry('');
     setDestinationCountry('');
     setWeight(0);
-    setDate(currentDate);
-    setRoute([]);
-    setShippingCost(0);
+    setOriginDate(currentDate);
+    setDestinationDate(currentDate);
+    setOriginRoute([]);
+    setdDestinationRoute([]);
+    setCost([]);
     setDistance(0);
 
     // Ваш код обробки форми
@@ -232,12 +219,12 @@ const OrderForm = () => {
             onSubmit={handleFormSubmit}
           >
             <div>
-              <label htmlFor="origin">Початковий пункт:</label>
+              <label htmlFor="originCity">Початковий пункт:</label>
               <input
                 type="text"
-                id="origin"
-                value={origin}
-                onChange={handleOriginChange}
+                id="originCity"
+                value={originCity}
+                onChange={handleOriginCityChange}
                 style={{
                   width: '100%',
                   padding: '5px',
@@ -277,12 +264,12 @@ const OrderForm = () => {
             </div>
 
             <div>
-              <label htmlFor="destination">Кінцевий пункт:</label>
+              <label htmlFor="destinationCity">Кінцевий пункт:</label>
               <input
                 type="text"
-                id="destination"
-                value={destination}
-                onChange={handleDestinationChange}
+                id="destinationCity"
+                value={destinationCity}
+                onChange={handleDestinationCityChange}
                 style={{
                   width: '100%',
                   padding: '5px',
@@ -324,56 +311,83 @@ const OrderForm = () => {
             </div>
             <div style={{ display: 'flex' }}>
               <div>
-                <label htmlFor="date" style={{ marginRight: '20px' }}>
-                  Дата:
-                </label>
-                <input
-                  type="date"
-                  id="date"
-                  value={date}
-                  onChange={handleDateChange}
-                  min={currentDate}
-                />
+                <div>
+                  <label htmlFor="originDate" style={{ paddingRight: '20px' }}>
+                    Дата погрузки:
+                  </label>
+                  <input
+                    type="date"
+                    id="originDate"
+                    value={originDate}
+                    onChange={handleOriginDateChange}
+                    min={currentDate}
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="destinationDate"
+                    style={{ paddingRight: '26px' }}
+                  >
+                    Дата приїзду:
+                  </label>
+                  <input
+                    type="date"
+                    id="destinationDate"
+                    value={destinationDate}
+                    min={currentDate}
+                    disabled
+                  />
+                </div>
+                <div>
+                  <label htmlFor="client" style={{ marginRight: '20px' }}>
+                    Замовник
+                  </label>
+                  <input
+                    type="string"
+                    id="client"
+                    value={client}
+                    onChange={handleClientChange}
+                  />
+                </div>
               </div>
+              <div>
+                <div>
+                  <label htmlFor="weight" style={{ marginRight: '20px' }}>
+                    Вага, кг:
+                  </label>
+                  <input
+                    type="number"
+                    id="weight"
+                    value={weight}
+                    onChange={handleWeightChange}
+                    min={50}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="distance" style={{ marginRight: '10px' }}>
+                    Відстань:
+                  </label>
+                  <input
+                    type="text"
+                    id="distance"
+                    value={distance}
+                    disabled
+                    style={{ fontWidth: 700 }}
+                  />
+                </div>
 
-              <div>
-                <label htmlFor="weight" style={{ marginRight: '20px' }}>
-                  Вага, кг:
-                </label>
-                <input
-                  type="number"
-                  id="weight"
-                  value={weight}
-                  onChange={handleWeightChange}
-                  min={0}
-                />
-              </div>
-            </div>
-            <div style={{ display: 'flex' }}>
-              <div>
-                <label htmlFor="shippingCost" style={{ marginRight: '10px' }}>
-                  Відстань:
-                </label>
-                <input
-                  type="text"
-                  id="distance"
-                  value={distance}
-                  disabled
-                  style={{ fontWidth: 700 }}
-                />
-              </div>
-
-              <div>
-                <label htmlFor="shippingCost" style={{ marginRight: '10px' }}>
-                  Вартість доставки:
-                </label>
-                <input
-                  type="text"
-                  id="shippingCost"
-                  value={shippingCost}
-                  disabled
-                  style={{ fontWidth: 700 }}
-                />
+                <div>
+                  <label htmlFor="cost" style={{ marginRight: '10px' }}>
+                    Вартість доставки:
+                  </label>
+                  <input
+                    type="text"
+                    id="cost"
+                    value={cost}
+                    disabled
+                    style={{ fontWidth: 700 }}
+                  />
+                </div>
               </div>
             </div>
             <button
@@ -395,40 +409,47 @@ const OrderForm = () => {
 
         {createElement && (
           <div style={{ width: '750px' }}>
-            <Link
-              to={'/shipments'}
+            <div
               style={{
-                textDecoration: 'none',
                 display: 'flex',
-                alignItems: 'center',
-                color: 'inherit',
               }}
             >
-              <IconButton color="primary">
-                <ArrowBackIcon />
-              </IconButton>
-              <Back style={{ marginRight: '150px' }}>
-                Перейти до списку перевезень
-              </Back>
-            </Link>
-            <button
-              style={{
-                padding: '10px',
-                borderRadius: '3px',
-                border: 'none',
-                backgroundColor: '#007bff',
-                color: '#fff',
-                cursor: 'pointer',
-              }}
-              onClick={() => {
-                handleNewShipment();
-              }}
-              type="button"
-            >
-              Зробити нове замовлення
-            </button>
+              <Link
+                to={'/shipments'}
+                style={{
+                  width: '500px',
+                  textDecoration: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  color: 'inherit',
+                }}
+              >
+                <IconButton color="primary">
+                  <ArrowBackIcon />
+                </IconButton>
+                <Back style={{ marginRight: '150px' }}>
+                  Перейти до списку перевезень
+                </Back>
+              </Link>
+              <button
+                style={{
+                  padding: '10px',
+                  borderRadius: '3px',
+                  border: 'none',
+                  backgroundColor: '#007bff',
+                  color: '#fff',
+                  cursor: 'pointer',
+                }}
+                onClick={() => {
+                  handleNewShipment();
+                }}
+                type="button"
+              >
+                Зробити нове замовлення
+              </button>
+            </div>
             <ShipmentBlock shipment={shipment} condition={false} />
-            <MapWithRoute coordinates={shipment.route} shipment={shipment} />
+            <MapWithRoute shipment={shipment} />
           </div>
         )}
       </div>

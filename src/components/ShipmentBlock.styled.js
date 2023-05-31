@@ -3,18 +3,20 @@ import styled from 'styled-components';
 export const Status = styled.div`
   text-align: center;
   padding: 0;
-  padding-top: 10px;
+  background: none;
 `;
 export const Wrap = styled.div`
   text-align: center;
   padding: 0;
   background: none;
-  width: 150px;
+  width: 250px;
 `;
 export const WrapArrow = styled.div`
   text-align: center;
-  padding: 20px;
+  padding: 0;
   background: none;
+  width: 100px;
+  padding: 40px;
 `;
 export const Dates = styled.div`
   padding: 0;
@@ -23,6 +25,7 @@ export const Dates = styled.div`
 `;
 export const Weight = styled.div`
   padding: 0;
+  padding-top: 10px;
   font-weight: 400;
   background: none;
 `;
@@ -61,9 +64,9 @@ export const Back = styled.h3`
 `;
 export const ButtonWrapper = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   flex-direction: column;
   width: 20px;
-  padding: 14px;
+  padding: 0;
 `;

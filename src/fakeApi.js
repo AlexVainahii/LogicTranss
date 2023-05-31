@@ -1,578 +1,296 @@
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  getFirestore,
+  setDoc,
+  updateDoc,
+} from 'firebase/firestore';
+import { initializeApp } from 'firebase/app';
+
 const cargoShipments = [
   {
-    id: 1,
-    shipmentNumber: 'ABC123',
-    origin: {
-      city: 'Київ',
-      country: 'Україна',
-    },
-    destination: {
-      city: 'Львів',
-      country: 'Україна',
-    },
-    weight: 500,
-    status: 'В процесі',
-    date: new Date('2023-05-01'),
-    route: [
-      [50.4501, 30.5234], // Координати початкового пункту
-      [49.8397, 24.0297], // Координати кінцевого пункту
-    ],
-    isInternational() {
-      return this.origin.country !== this.destination.country;
-    },
+    id: '1',
+    shipmentNum: 'ABC123',
+    originCity: 'Київ',
+    originCountry: 'Україна',
+    destinationCity: 'Лондон',
+    destinationCountry: 'Велика Британія',
+    originRoute: { lat: 50.4501, lng: 30.5234 },
+    destinationRoute: { lat: 51.5074, lng: -0.1276 },
+    weight: [1000, 30],
+    statusShip: 'В очікуванні',
+    originDate: '2023-05-01',
+    destinationDate: '2023-05-10',
+    isInternational: true,
+    distance: 2000,
+    cost: [5000, 1000],
+    client: ['John Doe', 'John Doe1'],
   },
   {
-    id: 2,
-    shipmentNumber: 'DEF456',
-    origin: {
-      city: 'Одеса',
-      country: 'Україна',
-    },
-    destination: {
-      city: 'Харків',
-      country: 'Україна',
-    },
-    weight: 750,
-    status: 'В процесі',
-    date: new Date('2023-05-10'),
-    route: [
-      [46.4825, 30.7233], // Координати початкового пункту
-      [49.9935, 36.2304], // Координати кінцевого пункту
-    ],
-    isInternational() {
-      return this.origin.country !== this.destination.country;
-    },
+    id: '2',
+    shipmentNum: 'DEF456',
+    originCity: 'Париж',
+    originCountry: 'Франція',
+    destinationCity: 'Мадрид',
+    destinationCountry: 'Іспанія',
+    originRoute: { lat: 48.8566, lng: 2.3522 },
+    destinationRoute: { lat: 40.4168, lng: -3.7038 },
+    weight: [1500],
+    statusShip: 'В очікуванні',
+    originDate: '2023-07-01',
+    destinationDate: '2023-07-10',
+    isInternational: true,
+    distance: 1500,
+    cost: [7000],
+    client: ['Jane Smith'],
   },
   {
-    id: 3,
-    shipmentNumber: 'GHI789',
-    origin: {
-      city: 'Львів',
-      country: 'Україна',
-    },
-    destination: {
-      city: 'Дніпро',
-      country: 'Україна',
-    },
-    weight: 300,
-    status: 'Відмінено',
-    date: new Date('2023-05-15'),
-    route: [
-      [49.8397, 24.0297], // Координати початкового пункту
-      [48.4647, 35.0462], // Координати кінцевого пункту
-    ],
-    isInternational() {
-      return this.origin.country !== this.destination.country;
-    },
-  },
-  // Додаткові об'єкти вантажних перевезень
-  {
-    id: 4,
-    shipmentNumber: 'JKL012',
-    origin: {
-      city: 'Лондон',
-      country: 'Велика Британія',
-    },
-    destination: {
-      city: 'Мадрид',
-      country: 'Іспанія',
-    },
-    weight: 900,
-    status: 'В процесі',
-    date: new Date('2023-05-05'),
-    route: [
-      [51.5074, -0.1278], // Координати початкового пункту
-      [40.4168, -3.7038], // Координати кінцевого пункту
-    ],
-    isInternational() {
-      return this.origin.country !== this.destination.country;
-    },
+    id: '3',
+    shipmentNum: 'GHI789',
+    originCity: 'Токіо',
+    originCountry: 'Японія',
+    destinationCity: 'Сідней',
+    destinationCountry: 'Австралія',
+    originRoute: { lat: 35.6895, lng: 139.6917 },
+    destinationRoute: { lat: -33.8688, lng: 151.2093 },
+    weight: [2000],
+    statusShip: 'В процесі',
+    originDate: '2023-04-01',
+    destinationDate: '2023-04-10',
+    isInternational: true,
+    distance: 8000,
+    cost: [10000],
+    client: ['David Johnson'],
   },
   {
-    id: 5,
-    shipmentNumber: 'MNO345',
-    origin: {
-      city: 'Париж',
-      country: 'Франція',
-    },
-    destination: {
-      city: 'Берлін',
-      country: 'Німеччина',
-    },
-    weight: 600,
-    status: 'Доставлено',
-    date: new Date('2023-05-12'),
-    route: [
-      [48.8566, 2.3522], // Координати початкового пункту
-      [52.52, 13.405], // Координати кінцевого пункту
-    ],
-    isInternational() {
-      return this.origin.country !== this.destination.country;
-    },
+    id: '4',
+    shipmentNum: 'JKL012',
+    originCity: 'Нью-Йорк',
+    originCountry: 'США',
+    destinationCity: 'Торонто',
+    destinationCountry: 'Канада',
+    originRoute: { lat: 40.7128, lng: -74.006 },
+    destinationRoute: { lat: 43.6532, lng: -79.3832 },
+    weight: [1200],
+    statusShip: 'Завершено',
+    originDate: '2023-09-01',
+    destinationDate: '2023-09-10',
+    isInternational: true,
+    distance: 500,
+    cost: [3000],
+    client: ['Emily Wilson'],
   },
   {
-    id: 6,
-    shipmentNumber: 'PQR678',
-    origin: {
-      city: 'Рим',
-      country: 'Італія',
-    },
-    destination: {
-      city: 'Афіни',
-      country: 'Греція',
-    },
-    weight: 400,
-    status: 'В процесі',
-    date: new Date('2023-05-18'),
-    route: [
-      [41.9028, 12.4964], // Координати початкового пункту
-      [37.9838, 23.7275], // Координати кінцевого пункту
-    ],
-    isInternational() {
-      return this.origin.country !== this.destination.country;
-    },
+    id: '5',
+    shipmentNum: 'MNO345',
+    originCity: 'Берлін',
+    originCountry: 'Німеччина',
+    destinationCity: 'Рим',
+    destinationCountry: 'Італія',
+    originRoute: { lat: 52.52, lng: 13.4049 },
+    destinationRoute: { lat: 41.9028, lng: 12.4964 },
+    weight: [800],
+    statusShip: 'В процесі',
+    originDate: '2022-11-21',
+    destinationDate: '2023-11-25',
+    isInternational: true,
+    distance: 1000,
+    cost: [4000],
+    client: ['Michael Brown'],
   },
   {
-    id: 7,
-    shipmentNumber: 'GHI7',
-    origin: {
-      city: 'Львів',
-      country: 'Україна',
-    },
-    destination: {
-      city: 'Дніпро',
-      country: 'Україна',
-    },
-    weight: 300,
-    status: 'В процесі',
-    date: new Date('2023-05-15'),
-    route: [
-      [49.8397, 24.0297], // Координати початкового пункту
-      [48.4647, 35.0462], // Координати кінцевого пункту
-    ],
-    isInternational() {
-      return this.origin.country !== this.destination.country;
-    },
+    id: '6',
+    shipmentNum: 'PQR678',
+    originCity: 'Сіетл',
+    originCountry: 'США',
+    destinationCity: 'Ванкувер',
+    destinationCountry: 'Канада',
+    originRoute: { lat: 47.6062, lng: -122.3321 },
+    destinationRoute: { lat: 49.2827, lng: -123.1207 },
+    weight: [900],
+    statusShip: 'В процесі',
+    originDate: '2023-11-01',
+    destinationDate: '2023-11-10',
+    isInternational: true,
+    distance: 300,
+    cost: [2000],
+    client: ['Sophia Davis'],
   },
   {
-    id: 8,
-    shipmentNumber: 'JKL8',
-    origin: {
-      city: 'Лондон',
-      country: 'Велика Британія',
-    },
-    destination: {
-      city: 'Мадрид',
-      country: 'Іспанія',
-    },
-    weight: 900,
-    status: 'Доставлено',
-    date: new Date('2023-05-05'),
-    route: [
-      [51.5074, -0.1278], // Координати початкового пункту
-      [40.4168, -3.7038], // Координати кінцевого пункту
-    ],
-    isInternational() {
-      return this.origin.country !== this.destination.country;
-    },
+    id: '7',
+    shipmentNum: 'STU901',
+    originCity: 'Сідней',
+    originCountry: 'Австралія',
+    destinationCity: 'Акланд',
+    destinationCountry: 'Нова Зеландія',
+    originRoute: { lat: -33.8688, lng: 151.2093 },
+    destinationRoute: { lat: -36.8485, lng: 174.7633 },
+    weight: [1800],
+    statusShip: 'Завершено',
+    originDate: '2023-05-29',
+    destinationDate: '2023-06-05',
+    isInternational: true,
+    distance: 1200,
+    cost: [6000],
+    client: ['Olivia Wilson'],
   },
   {
-    id: 9,
-    shipmentNumber: 'MNO9',
-    origin: {
-      city: 'Париж',
-      country: 'Франція',
-    },
-    destination: {
-      city: 'Берлін',
-      country: 'Німеччина',
-    },
-    weight: 600,
-    status: 'Доставлено',
-    date: new Date('2023-05-12'),
-    route: [
-      [48.8566, 2.3522], // Координати початкового пункту
-      [52.52, 13.405], // Координати кінцевого пункту
-    ],
-    isInternational() {
-      return this.origin.country !== this.destination.country;
-    },
+    id: '8',
+    shipmentNum: 'VWX234',
+    originCity: 'Мельбурн',
+    originCountry: 'Австралія',
+    destinationCity: 'Веллінгтон',
+    destinationCountry: 'Нова Зеландія',
+    originRoute: { lat: -37.8136, lng: 144.9631 },
+    destinationRoute: { lat: -41.2865, lng: 174.7762 },
+    weight: [1600],
+    statusShip: 'В процесі',
+    originDate: '2024-01-01',
+    destinationDate: '2024-01-10',
+    isInternational: true,
+    distance: 1300,
+    cost: [5500],
+    client: ['William Thompson'],
   },
   {
-    id: 10,
-    shipmentNumber: 'PQR10',
-    origin: {
-      city: 'Рим',
-      country: 'Італія',
-    },
-    destination: {
-      city: 'Афіни',
-      country: 'Греція',
-    },
-    weight: 400,
-    status: 'Доставлено',
-    date: new Date('2023-05-18'),
-    route: [
-      [41.9028, 12.4964], // Координати початкового пункту
-      [37.9838, 23.7275], // Координати кінцевого пункту
-    ],
-    isInternational() {
-      return this.origin.country !== this.destination.country;
-    },
+    id: '9',
+    shipmentNum: 'YZA567',
+    originCity: 'Торонто',
+    originCountry: 'Канада',
+    destinationCity: 'Монреаль',
+    destinationCountry: 'Канада',
+    originRoute: { lat: 43.6532, lng: -79.3832 },
+    destinationRoute: { lat: 45.5017, lng: -73.5673 },
+    weight: [1100],
+    statusShip: 'Завершено',
+    originDate: '2023-05-31',
+    destinationDate: '2023-06-10',
+    isInternational: false,
+    distance: 350,
+    cost: [2500],
+    client: ['Sophia Johnson'],
   },
   {
-    id: 11,
-    shipmentNumber: 'STU11',
-    origin: {
-      city: 'Мадрид',
-      country: 'Іспанія',
-    },
-    destination: {
-      city: 'Париж',
-      country: 'Франція',
-    },
-    weight: 700,
-    status: 'Доставлено',
-    date: new Date('2023-05-20'),
-    route: [
-      [40.4168, -3.7038], // Координати початкового пункту
-      [48.8566, 2.3522], // Координати кінцевого пункту
-    ],
-    isInternational() {
-      return this.origin.country !== this.destination.country;
-    },
-  },
-  {
-    id: 12,
-    shipmentNumber: 'VWX12',
-    origin: {
-      city: 'Берлін',
-      country: 'Німеччина',
-    },
-    destination: {
-      city: 'Лондон',
-      country: 'Велика Британія',
-    },
-    weight: 550,
-    status: 'Доставлено',
-    date: new Date('2023-05-25'),
-    route: [
-      [52.52, 13.405], // Координати початкового пункту
-      [51.5074, -0.1278], // Координати кінцевого пункту
-    ],
-    isInternational() {
-      return this.origin.country !== this.destination.country;
-    },
-  },
-  {
-    id: 13,
-    shipmentNumber: 'YZA13',
-    origin: {
-      city: 'Афіни',
-      country: 'Греція',
-    },
-    destination: {
-      city: 'Рим',
-      country: 'Італія',
-    },
-    weight: 400,
-    status: 'Відмінено',
-    date: new Date('2023-05-28'),
-    route: [
-      [37.9838, 23.7275], // Координати початкового пункту
-      [41.9028, 12.4964], // Координати кінцевого пункту
-    ],
-    isInternational() {
-      return this.origin.country !== this.destination.country;
-    },
-  },
-  // Ще 19 об'єктів за потребою
-  {
-    id: 14,
-    shipmentNumber: 'BCD14',
-    origin: {
-      city: 'Амстердам',
-      country: 'Нідерланди',
-    },
-    destination: {
-      city: 'Брюссель',
-      country: 'Бельгія',
-    },
-    weight: 800,
-    status: 'В процесі',
-    date: new Date('2023-06-01'),
-    route: [
-      [52.3702, 4.8952], // Координати початкового пункту
-      [50.8503, 4.3517], // Координати кінцевого пункту
-    ],
-    isInternational() {
-      return this.origin.country !== this.destination.country;
-    },
-  },
-  {
-    id: 15,
-    shipmentNumber: 'EFG15',
-    origin: {
-      city: 'Варшава',
-      country: 'Польща',
-    },
-    destination: {
-      city: 'Будапешт',
-      country: 'Угорщина',
-    },
-    weight: 650,
-    status: 'В процесі',
-    date: new Date('2023-06-05'),
-    route: [
-      [52.2297, 21.0122], // Координати початкового пункту
-      [47.4979, 19.0402], // Координати кінцевого пункту
-    ],
-    isInternational() {
-      return this.origin.country !== this.destination.country;
-    },
-  },
-  {
-    id: 16,
-    shipmentNumber: 'HIJ16',
-    origin: {
-      city: 'Копенгаген',
-      country: 'Данія',
-    },
-    destination: {
-      city: 'Стокгольм',
-      country: 'Швеція',
-    },
-    weight: 500,
-    status: 'Відмінено',
-    date: new Date('2023-06-10'),
-    route: [
-      [55.6761, 12.5683], // Координати початкового пункту
-      [59.3293, 18.0686], // Координати кінцевого пункту
-    ],
-    isInternational() {
-      return this.origin.country !== this.destination.country;
-    },
-  },
-  {
-    id: 17,
-    shipmentNumber: 'KLM17',
-    origin: {
-      city: 'Хельсінкі',
-      country: 'Фінляндія',
-    },
-    destination: {
-      city: 'Осло',
-      country: 'Норвегія',
-    },
-    weight: 300,
-    status: 'Доставлено',
-    date: new Date('2023-06-15'),
-    route: [
-      [60.1699, 24.9384], // Координати початкового пункту
-      [59.9139, 10.7522], // Координати кінцевого пункту
-    ],
-    isInternational() {
-      return this.origin.country !== this.destination.country;
-    },
-  },
-  {
-    id: 18,
-    shipmentNumber: 'NOP18',
-    origin: {
-      city: 'Відень',
-      country: 'Австрія',
-    },
-    destination: {
-      city: 'Прага',
-      country: 'Чехія',
-    },
-    weight: 450,
-    status: 'Доставлено',
-    date: new Date('2023-06-20'),
-    route: [
-      [48.2082, 16.3738], // Координати початкового пункту
-      [50.0755, 14.4378], // Координати кінцевого пункту
-    ],
-    isInternational() {
-      return this.origin.country !== this.destination.country;
-    },
-  },
-  {
-    id: 19,
-    shipmentNumber: 'QRS19',
-    origin: {
-      city: 'Варна',
-      country: 'Болгарія',
-    },
-    destination: {
-      city: 'Софія',
-      country: 'Болгарія',
-    },
-    weight: 250,
-    status: 'Доставлено',
-    date: new Date('2023-06-25'),
-    route: [
-      [43.2141, 27.9147], // Координати початкового пункту
-      [42.6977, 23.3219], // Координати кінцевого пункту
-    ],
-    isInternational() {
-      return this.origin.country !== this.destination.country;
-    },
-  },
-  {
-    id: 20,
-    shipmentNumber: 'TUV20',
-    origin: {
-      city: 'Будапешт',
-      country: 'Угорщина',
-    },
-    destination: {
-      city: 'Відень',
-      country: 'Австрія',
-    },
-    weight: 550,
-    status: 'Доставлено',
-    date: new Date('2023-06-30'),
-    route: [
-      [47.4979, 19.0402], // Координати початкового пункту
-      [48.2082, 16.3738], // Координати кінцевого пункту
-    ],
-    isInternational() {
-      return this.origin.country !== this.destination.country;
-    },
-  },
-  {
-    id: 21,
-    shipmentNumber: 'WXY21',
-    origin: {
-      city: 'Стокгольм',
-      country: 'Швеція',
-    },
-    destination: {
-      city: 'Осло',
-      country: 'Норвегія',
-    },
-    weight: 400,
-    status: 'Доставлено',
-    date: new Date('2023-07-05'),
-    route: [
-      [59.3293, 18.0686], // Координати початкового пункту
-      [59.9139, 10.7522], // Координати кінцевого пункту
-    ],
-    isInternational() {
-      return this.origin.country !== this.destination.country;
-    },
-  },
-  {
-    id: 22,
-    shipmentNumber: 'XYZ22',
-    origin: {
-      city: 'Осло',
-      country: 'Норвегія',
-    },
-    destination: {
-      city: 'Хельсінкі',
-      country: 'Фінляндія',
-    },
-    weight: 300,
-    status: 'Відмінено',
-    date: new Date('2023-07-10'),
-    route: [
-      [59.9139, 10.7522], // Координати початкового пункту
-      [60.1699, 24.9384], // Координати кінцевого пункту
-    ],
-    isInternational() {
-      return this.origin.country !== this.destination.country;
-    },
-  },
-  // Ще 12 об'єктів за потребою
-  {
-    id: 23,
-    shipmentNumber: 'ABC23',
-    origin: {
-      city: 'Мадрид',
-      country: 'Іспанія',
-    },
-    destination: {
-      city: 'Рим',
-      country: 'Італія',
-    },
-    weight: 500,
-    status: 'В процесі',
-    date: new Date('2023-07-15'),
-    route: [
-      [40.4168, -3.7038], // Координати початкового пункту
-      [41.9028, 12.4964], // Координати кінцевого пункту
-    ],
-    isInternational() {
-      return this.origin.country !== this.destination.country;
-    },
-  },
-  {
-    id: 24,
-    shipmentNumber: 'DEF24',
-    origin: {
-      city: 'Париж',
-      country: 'Франція',
-    },
-    destination: {
-      city: 'Амстердам',
-      country: 'Нідерланди',
-    },
-    weight: 350,
-    status: 'Доставлено',
-    date: new Date('2023-07-20'),
-    route: [
-      [48.8566, 2.3522], // Координати початкового пункту
-      [52.3702, 4.8952], // Координати кінцевого пункту
-    ],
-    isInternational() {
-      return this.origin.country !== this.destination.country;
-    },
-  },
-  {
-    id: 25,
-    shipmentNumber: 'GHI25',
-    origin: {
-      city: 'Лондон',
-      country: 'Велика Британія',
-    },
-    destination: {
-      city: 'Берлін',
-      country: 'Німеччина',
-    },
-    weight: 450,
-    status: 'Доставлено',
-    date: new Date('2023-07-25'),
-    route: [
-      [-0.1278, 51.5074], // Координати початкового пункту
-      [13.405, 52.52], // Координати кінцевого пункту
-    ],
-    isInternational() {
-      return this.origin.country !== this.destination.country;
-    },
+    id: '10',
+    shipmentNum: 'BCD789',
+    originCity: 'Лондон',
+    originCountry: 'Велика Британія',
+    destinationCity: 'Париж',
+    destinationCountry: 'Франція',
+    originRoute: { lat: 51.5074, lng: -0.1276 },
+    destinationRoute: { lat: 48.8566, lng: 2.3522 },
+    weight: [1400],
+    statusShip: 'В процесі',
+    originDate: '2024-03-01',
+    destinationDate: '2024-03-10',
+    isInternational: true,
+    distance: 400,
+    cost: [3500],
+    client: ['Daniel Anderson'],
   },
 ];
-// const updatedCargoShipments = cargoShipments.map(shipment => {
-//   const updatedRoute = shipment.route.map(coordinates => {
-//     return [coordinates[1], coordinates[0]]; // Міняємо довжину та широту місцями
-//   });
 
-//   return {
-//     ...shipment,
-//     route: updatedRoute,
-//   };
-// });
+const firebaseConfig = {
+  apiKey: 'AIzaSyC98VQ3rNvIgsY4elcV2uKxYu9lB0jkxbs',
+  authDomain: 'logistic-77f46.firebaseapp.com',
+  projectId: 'logistic-77f46',
+  storageBucket: 'logistic-77f46.appspot.com',
+  messagingSenderId: '981152076117',
+  appId: '1:981152076117:web:c646983c427797e4f51fdc',
+  measurementId: 'G-LLJ96HRJ02',
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+export const addOrders = async shipment => {
+  await setDoc(doc(db, 'shipments', shipment.id), shipment);
+  console.log(shipment);
+};
+export function generateSumString(array, text = '') {
+  let elements = '';
+  const sum = array.reduce((acc, curr) => acc + curr, 0);
+  if (array.length !== 1) {
+    elements = '(' + generateString(array, text) + text + ')';
+  }
+  return `${sum} ${text} ${elements} `;
+}
+export function generateString(array, text = '') {
+  if (array.lengh !== 1) {
+    return array.join(`${text}, `);
+  } else {
+    return array[0];
+  }
+}
+
+export const updateStatusBasedOnDate = async shipments => {
+  const currentDate = new Date();
+
+  const updatedShipments = await Promise.all(
+    shipments.map(async shipment => {
+      const { id, originDate, destinationDate } = shipment;
+      const shipmentRef = doc(db, 'shipments', id);
+
+      let updatedStatus = 'В процесі';
+      const originDateObj = new Date(originDate);
+      const destinationDateObj = new Date(destinationDate);
+
+      if (originDateObj > currentDate) {
+        updatedStatus = 'В очікуванні';
+      } else if (destinationDateObj < currentDate) {
+        updatedStatus = 'Виконано';
+      }
+
+      await updateDoc(shipmentRef, {
+        statusShip: updatedStatus,
+      });
+
+      return { ...shipment, statusShip: updatedStatus };
+    })
+  );
+
+  return updatedShipments;
+};
+export const changeId = async arrId => {};
+export const getOrders = async () => {
+  try {
+    const querySnapshot = await getDocs(collection(db, 'shipments'));
+    const shipments = querySnapshot.docs.map(doc => {
+      return doc.data();
+    });
+    return shipments;
+  } catch (error) {
+    console.error('Помилка при отриманні даних з Firestore:', error);
+    return [];
+  }
+};
+
+export const getOrderById = async id => {
+  try {
+    const docRef = doc(db, 'shipments', id);
+    const docSnapshot = await getDoc(docRef);
+
+    if (docSnapshot.exists()) {
+      return docSnapshot.data();
+    } else {
+      console.log('Документ не знайдено!');
+      return null;
+    }
+  } catch (error) {
+    console.error('Помилка при отриманні даних з Firestore:', error);
+    return null;
+  }
+};
 export const getInternational = (origin, destination) => {
   return origin !== destination;
 };
 
 export const handleSaveToLocalStorage = () => {
-  const shipments = JSON.stringify(cargoShipments);
-  localStorage.setItem('shipments1', shipments);
-
-  console.log('Вантажні відправлення збережено в локальному сховищі');
+  cargoShipments.map(shipment => addOrders(shipment));
 };
+
 export const getShipmentsFromLocalStorage = () => {
   const shipments = localStorage.getItem('shipments1');
   if (shipments) {
@@ -594,30 +312,32 @@ export const getShipmentsById = shipmentId => {
   return shipmentsLocal.find(shipment => shipment.id === shipmentId);
 };
 export const getcentrMap = shipment => {
-  const centerLat = (shipment.route[0][0] + shipment.route[1][0]) / 2;
-  const centerLng = (shipment.route[0][1] + shipment.route[1][1]) / 2;
+  const centerLat =
+    (shipment.originRoute.lat + shipment.destinationRoute.lat) / 2;
+  const centerLng =
+    (shipment.originRoute.lng + shipment.destinationRoute.lng) / 2;
   return [centerLng, centerLat];
 };
-export const getMarker = shipment => {
-  const route = shipment.route.map(cord => cord);
-  const g = route[0][0];
-  route[0][0] = route[0][1];
-  route[0][1] = g;
-  const p = route[1][0];
-  route[1][0] = route[1][1];
-  route[1][1] = p;
-  return route;
-};
-export function getDistance(route) {
+// export const getMarker = shipment => {
+//   const route = shipment.route.map(cord => cord);
+//   const g = route[0][0];
+//   route[0][0] = route[0][1];
+//   route[0][1] = g;
+//   const p = route[1][0];
+//   route[1][0] = route[1][1];
+//   route[1][1] = p;
+//   return route;
+// };
+export function getDistance(originRoute, destinationRoute) {
   const earthRadius = 6371; // Радіус Землі в кілометрах
 
-  const dLat = toRadians(route[1][0] - route[0][0]);
-  const dLon = toRadians(route[1][1] - route[0][1]);
+  const dLat = toRadians(destinationRoute.lat - originRoute.lat);
+  const dLon = toRadians(destinationRoute.lng - originRoute.lng);
 
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(toRadians(route[0][0])) *
-      Math.cos(toRadians(route[1][0])) *
+    Math.cos(toRadians(originRoute.lat)) *
+      Math.cos(toRadians(destinationRoute.lat)) *
       Math.sin(dLon / 2) *
       Math.sin(dLon / 2);
 
@@ -664,7 +384,7 @@ export function calculateShippingCost(
 
   // Розрахунок націнки в залежності від ваги
   if (weight > 1000) {
-    const overweightCharge = (weight - 1000) * 0.1; // Наприклад, $0.1 за кожен кілограм ваги понад 1000 кг
+    const overweightCharge = (weight - 1000) * 0.5; // Наприклад, $0.5 за кожен кілограм ваги понад 1000 кг
     baseCost += overweightCharge;
   }
 

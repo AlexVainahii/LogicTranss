@@ -4,10 +4,8 @@ import Icon from '@mui/material/Icon';
 import Tooltip from '@mui/material/Tooltip';
 
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
-import CancelIcon from '@mui/icons-material/Cancel';
-import CheckIcon from '@mui/icons-material/Check';
-import DeleteIcon from '@mui/icons-material/Delete';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+
 import {
   CardWrapper,
   ProductName,
@@ -20,13 +18,8 @@ import {
   Weight,
   ButtonWrapper,
 } from './ShipmentBlock.styled';
-import {
-  StyledIconRadioButton,
-  StyledIconCancelButton,
-  StyledIconCheckButton,
-  StyledIconDeleteButton,
-} from './ShipmentBlockIcon.styled';
-import { isInternational } from 'fakeApi';
+import { StyledIconAdd } from './ShipmentBlockIcon.styled';
+import { generateString, generateSumString } from 'fakeApi';
 
 const getStatusColor = status => {
   let className = 'default';
@@ -35,7 +28,7 @@ const getStatusColor = status => {
     case 'В процесі':
       className = 'in-progress';
       break;
-    case 'Доставлено':
+    case 'Виконано':
       className = 'completed';
       break;
     default:
@@ -46,98 +39,79 @@ const getStatusColor = status => {
   return className;
 };
 
-export const ShipmentBlock = ({
-  shipment,
-  condition,
-  handleStatusChange,
-  handleDelete,
-}) => {
+export const ShipmentBlock = ({ shipment, condition }) => {
   const location = useLocation();
 
   return (
-    <CardWrapper key={shipment.id} className={getStatusColor(shipment.status)}>
-      <Link
-        to={`${shipment.id}`}
-        state={{ from: location }}
-        onClick={!condition ? e => e.preventDefault() : undefined}
-        key={shipment.id}
-        shipment={shipment}
-        condition={1}
-        handleStatusChange={handleStatusChange}
-        handleDelete={handleDelete}
-      >
-        <ProductName>
-          {isInternational(shipment)
-            ? 'Міжнародне перевезення'
-            : 'Внутрішнє перевезення'}{' '}
-          №: {shipment.shipmentNumber}
-          <Weight>Вага: {shipment.weight} кг</Weight>
-          <Dates>Дата: {new Date(shipment.date).toLocaleDateString()}</Dates>
-        </ProductName>
-        <Status>Статус: {shipment.status}</Status>
-        <Wrapper>
-          <Wrap>
-            <Pag>Початковий пункт:</Pag>
-            <Pag>
-              {shipment.origin.city}, {shipment.origin.country}
-            </Pag>
-          </Wrap>
-          <WrapArrow>
-            <Icon component={ArrowForwardIcon} />
-          </WrapArrow>
-          <Wrap>
-            <Pag>Кінцевий пункт:</Pag>
-            <Pag>
-              {shipment.destination.city}, {shipment.destination.country}
-            </Pag>
-          </Wrap>
-        </Wrapper>
-      </Link>
-
-      {condition === 1 && (
+    <CardWrapper
+      key={shipment.id}
+      className={getStatusColor(shipment.statusShip)}
+    >
+      <Tooltip title="Переглянути на карті" placement="top">
+        <Link
+          to={`${shipment.id}`}
+          state={{ from: location }}
+          onClick={!condition ? e => e.preventDefault() : undefined}
+          key={shipment.id}
+          shipment={shipment}
+          condition={1}
+        >
+          <div style={{ padding: ' 0', background: 'none' }}>
+            <ProductName>
+              {shipment.isInternational
+                ? 'Міжнародне перевезення'
+                : 'Внутрішнє перевезення'}{' '}
+              №: {shipment.shipmentNum}
+              <Status>Статус: {shipment.statusShip}</Status>
+              <Status> {generateString(shipment.client)}</Status>
+            </ProductName>
+            <Wrapper>
+              <Wrap>
+                <Pag>Початковий пункт:</Pag>
+                <Pag>{shipment.originCity}</Pag>
+                <Pag>{shipment.originCountry}</Pag>
+                <Dates>
+                  Дата: {new Date(shipment.originDate).toLocaleDateString()}
+                </Dates>
+                <Weight>
+                  Вага: {generateSumString(shipment.weight, 'кг')}
+                </Weight>
+              </Wrap>
+              <WrapArrow>
+                <Pag> {shipment.distance} км</Pag>
+                <Icon component={ArrowForwardIcon} />
+              </WrapArrow>
+              <Wrap>
+                <Pag>Кінцевий пункт:</Pag>
+                <Pag>{shipment.destinationCity}</Pag>
+                <Pag> {shipment.destinationCountry}</Pag>
+                <Dates>
+                  Дата:{' '}
+                  {new Date(shipment.destinationDate).toLocaleDateString()}
+                </Dates>
+                <Weight>Ціна: {generateSumString(shipment.cost, 'грн')}</Weight>
+              </Wrap>
+            </Wrapper>
+          </div>
+        </Link>
+      </Tooltip>
+      {shipment.statusShip === 'В очікуванні' && (
         <ButtonWrapper>
           {shipment.status !== 'В процесі' && (
-            <Tooltip title="Встановити статус 'Вибрати'" placement="left">
-              <StyledIconRadioButton
-                onClick={() => handleStatusChange(shipment.id, 'В процесі')}
+            <Tooltip
+              title="Додати свій вантаж до даного перевезення"
+              placement="left"
+            >
+              <StyledIconAdd
                 style={{
                   width: '24px',
                   height: '24px',
                 }}
               >
-                <RadioButtonUncheckedIcon />
-              </StyledIconRadioButton>
+                <AddCircleOutlineIcon />
+              </StyledIconAdd>
             </Tooltip>
           )}
-          {shipment.status !== 'Відмінено' && (
-            <Tooltip title="Встановити статус 'Відмінено'" placement="left">
-              <StyledIconCancelButton
-                onClick={() => handleStatusChange(shipment.id, 'Відмінено')}
-                style={{ width: '24px', height: '24px' }}
-              >
-                <CancelIcon />
-              </StyledIconCancelButton>
-            </Tooltip>
-          )}
-          {shipment.status !== 'Доставлено' && (
-            <Tooltip title="Встановити статус 'Доставлено'" placement="left">
-              <StyledIconCheckButton
-                onClick={() => handleStatusChange(shipment.id, 'Доставлено')}
-                disabled={shipment.status === 'Доставлено'}
-                style={{ width: '24px', height: '24px' }}
-              >
-                <CheckIcon />
-              </StyledIconCheckButton>
-            </Tooltip>
-          )}
-          <Tooltip title="Видалити перевезення" placement="left">
-            <StyledIconDeleteButton
-              onClick={() => handleDelete(shipment.id)}
-              style={{ width: '24px', height: '24px' }}
-            >
-              <DeleteIcon />
-            </StyledIconDeleteButton>
-          </Tooltip>
         </ButtonWrapper>
       )}
     </CardWrapper>
