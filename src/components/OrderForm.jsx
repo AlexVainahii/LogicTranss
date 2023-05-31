@@ -261,6 +261,24 @@ const OrderForm = () => {
           Ваше замовлення
         </Title>
       )}
+      {id && (
+        <Link
+          to={backLinkHref}
+          style={{
+            textDecoration: 'none',
+            marginLeft: '170px',
+            display: 'flex',
+            alignItems: 'center',
+            color: 'inherit',
+            width: '50px',
+          }}
+        >
+          <IconButton color="primary">
+            <ArrowBackIcon />
+          </IconButton>
+          <Back>Повернутись </Back>
+        </Link>
+      )}
       <div style={{ display: 'flex' }}>
         {!createElement && (
           <form
