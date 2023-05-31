@@ -1,5 +1,6 @@
 import { Nav, Tab } from 'components/About.styled';
-import { Link, Outlet } from 'react-router-dom';
+import { Links } from 'components/SharedLayout.styled';
+import { Outlet } from 'react-router-dom';
 
 export const About = () => {
   return (
@@ -8,13 +9,13 @@ export const About = () => {
         <Nav>
           <ul>
             <Tab>
-              <Link to="/about">Про нас</Link>
+              <Links to="/about/">Про нас</Links>
             </Tab>
             <Tab>
-              <Link to="team">Дізнайтеся про нашу команду</Link>
+              <Links to="team">Дізнайтеся про нашу команду</Links>
             </Tab>
             <Tab>
-              <Link to="reviews">Ознайомтесь з відгуками</Link>
+              <Links to="reviews">Ознайомтесь з відгуками</Links>
             </Tab>
           </ul>
         </Nav>
