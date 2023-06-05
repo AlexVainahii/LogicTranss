@@ -222,8 +222,6 @@ const OrderForm = () => {
     setOriginFlag(false);
     setoDestinationFlag(false);
 
-    // Ваш код обробки форми
-
     // Показати Toast повідомлення
     if (id) {
       toast.success('Ваше дані успішно додані до Замовлення!', {
